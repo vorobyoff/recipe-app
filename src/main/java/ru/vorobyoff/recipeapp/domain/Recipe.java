@@ -1,6 +1,7 @@
 package ru.vorobyoff.recipeapp.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
@@ -9,6 +10,7 @@ import javax.persistence.OneToOne;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -29,10 +31,12 @@ public class Recipe {
     private Byte[] image;
     @OneToMany(cascade = ALL, mappedBy = "recipe")
     private Set<Ingredient> ingredients;
+    @Enumerated(STRING)
+    private Difficulty difficulty;
 
     public Recipe(final Long id, final Integer prepTime, final Integer cookTime, final Integer serving,
                   final Integer source, final String url, final String description, final Note note,
-                  final Byte[] image, final Set<Ingredient> ingredients) {
+                  final Byte[] image, final Set<Ingredient> ingredients, final Difficulty difficulty) {
         this.id = id;
         this.prepTime = prepTime;
         this.cookTime = cookTime;
@@ -43,6 +47,7 @@ public class Recipe {
         this.note = note;
         this.image = image;
         this.ingredients = ingredients;
+        this.difficulty = difficulty;
     }
 
     @Deprecated
@@ -128,5 +133,13 @@ public class Recipe {
 
     public void setIngredients(final Set<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(final Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 }
