@@ -4,7 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -25,10 +27,12 @@ public class Recipe {
     private Note note;
     @Lob
     private Byte[] image;
+    @OneToMany(cascade = ALL, mappedBy = "recipe")
+    private Set<Ingredient> ingredients;
 
-    public Recipe(final Long id, final Integer prepTime, final Integer cookTime,
-                  final Integer serving, final Integer source, final String url,
-                  final String description, final Note note, final Byte[] image) {
+    public Recipe(final Long id, final Integer prepTime, final Integer cookTime, final Integer serving,
+                  final Integer source, final String url, final String description, final Note note,
+                  final Byte[] image, final Set<Ingredient> ingredients) {
         this.id = id;
         this.prepTime = prepTime;
         this.cookTime = cookTime;
@@ -38,6 +42,7 @@ public class Recipe {
         this.description = description;
         this.note = note;
         this.image = image;
+        this.ingredients = ingredients;
     }
 
     @Deprecated
@@ -115,5 +120,13 @@ public class Recipe {
 
     public void setImage(final Byte[] image) {
         this.image = image;
+    }
+
+    public Set<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(final Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 }
