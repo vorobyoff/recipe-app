@@ -4,7 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.Set;
@@ -33,10 +36,16 @@ public class Recipe {
     private Set<Ingredient> ingredients;
     @Enumerated(STRING)
     private Difficulty difficulty;
+    @ManyToMany
+    @JoinTable(name = "recipe_category",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories;
 
     public Recipe(final Long id, final Integer prepTime, final Integer cookTime, final Integer serving,
                   final Integer source, final String url, final String description, final Note note,
-                  final Byte[] image, final Set<Ingredient> ingredients, final Difficulty difficulty) {
+                  final Byte[] image, final Set<Ingredient> ingredients, final Difficulty difficulty,
+                  final Set<Category> categories) {
         this.id = id;
         this.prepTime = prepTime;
         this.cookTime = cookTime;
@@ -48,6 +57,7 @@ public class Recipe {
         this.image = image;
         this.ingredients = ingredients;
         this.difficulty = difficulty;
+        this.categories = categories;
     }
 
     @Deprecated
@@ -141,5 +151,13 @@ public class Recipe {
 
     public void setDifficulty(final Difficulty difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(final Set<Category> categories) {
+        this.categories = categories;
     }
 }
