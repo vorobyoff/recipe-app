@@ -25,8 +25,7 @@ public class Note {
         this.recipeNote = recipeNote;
     }
 
-    public Note(final Recipe recipe, final String recipeNote) {
-        this.recipe = recipe;
+    public Note(final String recipeNote) {
         this.recipeNote = recipeNote;
     }
 
