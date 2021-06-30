@@ -30,6 +30,13 @@ public class Ingredient {
         this.uom = uom;
     }
 
+    public Ingredient(final String description, final BigDecimal amount, final UnitOfMeasure uom, final Recipe recipe) {
+        this.description = description;
+        this.amount = amount;
+        this.recipe = recipe;
+        this.uom = uom;
+    }
+
     @Deprecated
     // Using only for JPA
     public Ingredient() {

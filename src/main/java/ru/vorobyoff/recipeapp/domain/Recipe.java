@@ -10,6 +10,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.util.HashSet;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
@@ -33,19 +34,21 @@ public class Recipe {
     @Lob
     private Byte[] image;
     @OneToMany(cascade = ALL, mappedBy = "recipe")
-    private Set<Ingredient> ingredients;
+    private Set<Ingredient> ingredients = new HashSet<>();
     @Enumerated(STRING)
     private Difficulty difficulty;
     @ManyToMany
     @JoinTable(name = "recipe_category",
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
+    @Lob
+    private String direction;
 
     public Recipe(final Long id, final Integer prepTime, final Integer cookTime, final Integer serving,
                   final Integer source, final String url, final String description, final Note note,
                   final Byte[] image, final Set<Ingredient> ingredients, final Difficulty difficulty,
-                  final Set<Category> categories) {
+                  final Set<Category> categories, final String direction) {
         this.id = id;
         this.prepTime = prepTime;
         this.cookTime = cookTime;
@@ -58,11 +61,31 @@ public class Recipe {
         this.ingredients = ingredients;
         this.difficulty = difficulty;
         this.categories = categories;
+        this.direction = direction;
+    }
+
+    public Recipe(final Integer prepTime, final Integer cookTime, final String description, final Note note, final Set<Ingredient> ingredients, final Difficulty difficulty, final Set<Category> categories, final String direction) {
+        this.prepTime = prepTime;
+        this.cookTime = cookTime;
+        this.description = description;
+        this.note = note;
+        this.ingredients = ingredients;
+        this.difficulty = difficulty;
+        this.categories = categories;
+        this.direction = direction;
     }
 
     @Deprecated
     // Using only for JPA
-    protected Recipe() {
+    public Recipe() {
+    }
+
+    public Recipe(final String description, final int prepTime, final int cookTime, final Difficulty difficulty, final String direction) {
+        this.prepTime = prepTime;
+        this.cookTime = cookTime;
+        this.description = description;
+        this.difficulty = difficulty;
+        this.direction = direction;
     }
 
     public Long getId() {
@@ -159,5 +182,13 @@ public class Recipe {
 
     public void setCategories(final Set<Category> categories) {
         this.categories = categories;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(final String direction) {
+        this.direction = direction;
     }
 }

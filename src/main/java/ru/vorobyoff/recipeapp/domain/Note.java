@@ -25,6 +25,11 @@ public class Note {
         this.recipeNote = recipeNote;
     }
 
+    public Note(final Recipe recipe, final String recipeNote) {
+        this.recipe = recipe;
+        this.recipeNote = recipeNote;
+    }
+
     @Deprecated
     // Using only for JPA
     public Note() {
