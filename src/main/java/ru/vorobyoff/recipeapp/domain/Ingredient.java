@@ -1,6 +1,7 @@
 package ru.vorobyoff.recipeapp.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode.Exclude;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class Ingredient {
     private String description;
     @NonNull
     private BigDecimal amount;
+    @Exclude
     @NonNull
     @ManyToOne
     private Recipe recipe;

@@ -174,8 +174,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
                 .orElseThrow(() -> new RuntimeException("Expected Category Not Found"));
     }
 
-    private UnitOfMeasure getUnitOfMeasure(final String each) {
-        return unitOfMeasureRepository.findByDescription(each)
-                .orElseThrow(() -> new RuntimeException("Expected Unit Not Found. Unit type is '" + each + ""));
+    private UnitOfMeasure getUnitOfMeasure(final String description) {
+        return unitOfMeasureRepository.findByDescription(description)
+                .orElseThrow(() -> new RuntimeException("Expected Unit Not Found. Unit type is '" + description + "'"));
     }
 }

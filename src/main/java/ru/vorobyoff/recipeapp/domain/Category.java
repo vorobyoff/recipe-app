@@ -1,6 +1,7 @@
 package ru.vorobyoff.recipeapp.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode.Exclude;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class Category {
     private Long id;
     @NonNull
     private String description;
+    @Exclude
     @NonNull
     @ManyToMany(mappedBy = "categories")
     private Set<Recipe> recipes;

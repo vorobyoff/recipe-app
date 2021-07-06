@@ -1,6 +1,7 @@
 package ru.vorobyoff.recipeapp.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode.Exclude;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class Note {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+    @Exclude
     @OneToOne
     private Recipe recipe;
     @NonNull
