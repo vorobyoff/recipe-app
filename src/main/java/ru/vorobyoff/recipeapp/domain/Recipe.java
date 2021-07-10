@@ -64,13 +64,22 @@ public class Recipe {
         this.note = note;
     }
 
-    public Recipe addIngredient(final Ingredient ingredient) {
+    public void addIngredient(final Ingredient ingredient) {
         ingredients.add(ingredient);
         ingredient.setRecipe(this);
-        return this;
+    }
+
+    public void addIngredients(final Ingredient... ingredients) {
+        for (final var ingredient : ingredients)
+            addIngredient(ingredient);
     }
 
     public void addCategory(final Category category) {
         categories.add(category);
+    }
+
+    public void addCategories(final Category... categories) {
+        for (final var category : categories)
+            addCategory(category);
     }
 }
