@@ -9,7 +9,6 @@ import ru.vorobyoff.recipeapp.services.RecipeService;
 
 import java.util.Set;
 
-import static java.util.Set.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.ArgumentMatchers.eq;
@@ -20,6 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+import static org.thymeleaf.util.SetUtils.singletonSet;
 
 class IndexControllerTest {
 
@@ -45,7 +45,7 @@ class IndexControllerTest {
 
     @Test
     void getIndexPage() {
-        final var recipes = of(Recipe.builder().build());
+        final var recipes = singletonSet(Recipe.builder().build());
         when(service.getRecipes()).thenReturn(recipes);
         final var captor = forClass(Set.class);
         assertEquals("index", controller.getIndexPage(model));

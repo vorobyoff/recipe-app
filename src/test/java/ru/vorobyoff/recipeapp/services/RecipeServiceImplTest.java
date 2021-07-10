@@ -8,8 +8,11 @@ import ru.vorobyoff.recipeapp.repositories.RecipeRepository;
 
 import java.util.Set;
 
+import static java.util.Collections.emptySet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 class RecipeServiceImplTest {
@@ -31,8 +34,18 @@ class RecipeServiceImplTest {
         when(repository.findAll()).thenReturn(testRecipes);
 
         final var recipes = service.getRecipes();
-        assertEquals(recipes.size(), 1);
+        assertEquals(testRecipes.size(), recipes.size());
 
-        verify(repository, times(1)).findAll();
+        verify(repository).findAll();
+    }
+
+    @Test
+    void getRecipesNotFoundCase() {
+        when(repository.findAll()).thenReturn(emptySet());
+
+        final var recipes = service.getRecipes();
+        assertTrue(recipes.isEmpty());
+
+        verify(repository).findAll();
     }
 }

@@ -15,9 +15,10 @@ class UnitOfMeasureRepositoryIT {
 
     @Test
     void findByDescription() {
-        final var unit = repository.findByDescription("Cup")
+        final var description = "Cup";
+        final var unit = repository.findByDescription(description)
                 .orElseThrow(() -> new DataRetrievalFailureException("No data available with this description."));
 
-        assertEquals("Cup", unit.getDescription());
+        assertEquals(description, unit.getDescription());
     }
 }
