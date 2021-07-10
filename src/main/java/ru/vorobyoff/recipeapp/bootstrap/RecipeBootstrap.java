@@ -22,13 +22,14 @@ import static ru.vorobyoff.recipeapp.domain.Difficulty.MODERATE;
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
-    private final CategoryRepository categoryRepository;
     private final RecipeRepository recipeRepository;
+    private final CategoryRepository categoryRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
 
-    public RecipeBootstrap(final CategoryRepository categoryRepository, final RecipeRepository recipeRepository, final UnitOfMeasureRepository unitOfMeasureRepository) {
-        this.categoryRepository = categoryRepository;
+    public RecipeBootstrap(final RecipeRepository recipeRepository, final CategoryRepository categoryRepository,
+                           final UnitOfMeasureRepository unitOfMeasureRepository) {
         this.recipeRepository = recipeRepository;
+        this.categoryRepository = categoryRepository;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
     }
 
@@ -41,17 +42,17 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private void bootstrapRecipes() {
 
         //get UOMs
-        final var eachUom = getUnitOfMeasure("Each");
-        final var tableSpoonUom = getUnitOfMeasure("Tablespoon");
-        final var teaspoonUom = getUnitOfMeasure("Teaspoon");
-        final var dashUom = getUnitOfMeasure("Dash");
-        final var pintUom = getUnitOfMeasure("Pint");
-        final var cupsUom = getUnitOfMeasure("Cup");
+        final var eachUom = findUnitOfMeasureByDescription("Each");
+        final var tableSpoonUom = findUnitOfMeasureByDescription("Tablespoon");
+        final var teaspoonUom = findUnitOfMeasureByDescription("Teaspoon");
+        final var dashUom = findUnitOfMeasureByDescription("Dash");
+        final var pintUom = findUnitOfMeasureByDescription("Pint");
+        final var cupsUom = findUnitOfMeasureByDescription("Cup");
         log.info("UOMs have been received.");
 
         //get Categories
-        final var americanCategory = getCategory("American");
-        final var mexicanCategory = getCategory("Mexican");
+        final var americanCategory = findCategoryByDescription("American");
+        final var mexicanCategory = findCategoryByDescription("Mexican");
         log.info("Categories have been received.");
 
         //Yummy Guac
@@ -89,17 +90,16 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         guacRecipe.setNote(guacNotes);
 
-        guacRecipe.addIngredient(new Ingredient("ripe avocados", new BigDecimal(2), guacRecipe, eachUom));
-        guacRecipe.addIngredient(new Ingredient("Kosher salt", new BigDecimal(".5"), guacRecipe, teaspoonUom));
-        guacRecipe.addIngredient(new Ingredient("fresh lime juice or lemon juice", new BigDecimal(2), guacRecipe, tableSpoonUom));
-        guacRecipe.addIngredient(new Ingredient("minced red onion or thinly sliced green onion", new BigDecimal(2), guacRecipe, tableSpoonUom));
-        guacRecipe.addIngredient(new Ingredient("serrano chiles, stems and seeds removed, minced", new BigDecimal(2), guacRecipe, eachUom));
-        guacRecipe.addIngredient(new Ingredient("Cilantro", new BigDecimal(2), guacRecipe, tableSpoonUom));
-        guacRecipe.addIngredient(new Ingredient("freshly grated black pepper", new BigDecimal(2), guacRecipe, dashUom));
-        guacRecipe.addIngredient(new Ingredient("ripe tomato, seeds and pulp removed, chopped", new BigDecimal(".5"), guacRecipe, eachUom));
+        guacRecipe.addIngredients(new Ingredient("ripe avocados", new BigDecimal(2), guacRecipe, eachUom),
+                new Ingredient("Kosher salt", new BigDecimal(".5"), guacRecipe, teaspoonUom),
+                new Ingredient("fresh lime juice or lemon juice", new BigDecimal(2), guacRecipe, tableSpoonUom),
+                new Ingredient("minced red onion or thinly sliced green onion", new BigDecimal(2), guacRecipe, tableSpoonUom),
+                new Ingredient("serrano chiles, stems and seeds removed, minced", new BigDecimal(2), guacRecipe, eachUom),
+                new Ingredient("Cilantro", new BigDecimal(2), guacRecipe, tableSpoonUom),
+                new Ingredient("freshly grated black pepper", new BigDecimal(2), guacRecipe, dashUom),
+                new Ingredient("ripe tomato, seeds and pulp removed, chopped", new BigDecimal(".5"), guacRecipe, eachUom));
 
-        guacRecipe.addCategory(americanCategory);
-        guacRecipe.addCategory(mexicanCategory);
+        guacRecipe.addCategories(americanCategory, mexicanCategory);
 
         final var tacosRecipe = new Recipe(9, 20, "Spicy Grilled Chicken Taco", MODERATE,
                 "1 Prepare a gas or charcoal grill for medium-high, direct heat.\n" +
@@ -138,44 +138,42 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         tacosRecipe.setNote(tacoNotes);
 
-        tacosRecipe.addIngredient(new Ingredient("Ancho Chili Powder", new BigDecimal(2), tacosRecipe, tableSpoonUom));
-        tacosRecipe.addIngredient(new Ingredient("Dried Oregano", new BigDecimal(1), tacosRecipe, teaspoonUom));
-        tacosRecipe.addIngredient(new Ingredient("Dried Cumin", new BigDecimal(1), tacosRecipe, teaspoonUom));
-        tacosRecipe.addIngredient(new Ingredient("Sugar", new BigDecimal(1), tacosRecipe, teaspoonUom));
-        tacosRecipe.addIngredient(new Ingredient("Salt", new BigDecimal(".5"), tacosRecipe, teaspoonUom));
-        tacosRecipe.addIngredient(new Ingredient("Clove of Garlic, Choppedr", new BigDecimal(1), tacosRecipe, eachUom));
-        tacosRecipe.addIngredient(new Ingredient("finely grated orange zestr", new BigDecimal(1), tacosRecipe, tableSpoonUom));
-        tacosRecipe.addIngredient(new Ingredient("fresh-squeezed orange juice", new BigDecimal(3), tacosRecipe, tableSpoonUom));
-        tacosRecipe.addIngredient(new Ingredient("Olive Oil", new BigDecimal(2), tacosRecipe, tableSpoonUom));
-        tacosRecipe.addIngredient(new Ingredient("boneless chicken thighs", new BigDecimal(4), tacosRecipe, tableSpoonUom));
-        tacosRecipe.addIngredient(new Ingredient("small corn tortillasr", new BigDecimal(8), tacosRecipe, eachUom));
-        tacosRecipe.addIngredient(new Ingredient("packed baby arugula", new BigDecimal(3), tacosRecipe, cupsUom));
-        tacosRecipe.addIngredient(new Ingredient("medium ripe avocados, slic", new BigDecimal(2), tacosRecipe, eachUom));
-        tacosRecipe.addIngredient(new Ingredient("radishes, thinly sliced", new BigDecimal(4), tacosRecipe, eachUom));
-        tacosRecipe.addIngredient(new Ingredient("cherry tomatoes, halved", new BigDecimal(".5"), tacosRecipe, pintUom));
-        tacosRecipe.addIngredient(new Ingredient("red onion, thinly sliced", new BigDecimal(".25"), tacosRecipe, eachUom));
-        tacosRecipe.addIngredient(new Ingredient("Roughly chopped cilantro", new BigDecimal(4), tacosRecipe, eachUom));
-        tacosRecipe.addIngredient(new Ingredient("cup sour cream thinned with 1/4 cup milk", new BigDecimal(4), tacosRecipe, cupsUom));
-        tacosRecipe.addIngredient(new Ingredient("lime, cut into wedges", new BigDecimal(4), tacosRecipe, eachUom));
+        tacosRecipe.addIngredients(new Ingredient("Ancho Chili Powder", new BigDecimal(2), tacosRecipe, tableSpoonUom),
+                new Ingredient("Dried Oregano", new BigDecimal(1), tacosRecipe, teaspoonUom),
+                new Ingredient("Dried Cumin", new BigDecimal(1), tacosRecipe, teaspoonUom),
+                new Ingredient("Sugar", new BigDecimal(1), tacosRecipe, teaspoonUom),
+                new Ingredient("Salt", new BigDecimal(".5"), tacosRecipe, teaspoonUom),
+                new Ingredient("Clove of Garlic, Choppedr", new BigDecimal(1), tacosRecipe, eachUom),
+                new Ingredient("finely grated orange zestr", new BigDecimal(1), tacosRecipe, tableSpoonUom),
+                new Ingredient("fresh-squeezed orange juice", new BigDecimal(3), tacosRecipe, tableSpoonUom),
+                new Ingredient("Olive Oil", new BigDecimal(2), tacosRecipe, tableSpoonUom),
+                new Ingredient("boneless chicken thighs", new BigDecimal(4), tacosRecipe, tableSpoonUom),
+                new Ingredient("small corn tortillasr", new BigDecimal(8), tacosRecipe, eachUom),
+                new Ingredient("packed baby arugula", new BigDecimal(3), tacosRecipe, cupsUom),
+                new Ingredient("medium ripe avocados, slic", new BigDecimal(2), tacosRecipe, eachUom),
+                new Ingredient("radishes, thinly sliced", new BigDecimal(4), tacosRecipe, eachUom),
+                new Ingredient("cherry tomatoes, halved", new BigDecimal(".5"), tacosRecipe, pintUom),
+                new Ingredient("red onion, thinly sliced", new BigDecimal(".25"), tacosRecipe, eachUom),
+                new Ingredient("Roughly chopped cilantro", new BigDecimal(4), tacosRecipe, eachUom),
+                new Ingredient("cup sour cream thinned with 1/4 cup milk", new BigDecimal(4), tacosRecipe, cupsUom),
+                new Ingredient("lime, cut into wedges", new BigDecimal(4), tacosRecipe, eachUom));
 
-        tacosRecipe.addCategory(americanCategory);
-        tacosRecipe.addCategory(mexicanCategory);
+        tacosRecipe.addCategories(americanCategory, mexicanCategory);
 
         log.info("Recipes have been created.");
 
         recipeRepository.save(guacRecipe);
         recipeRepository.save(tacosRecipe);
         log.info("Recipes have been saved.");
-
     }
 
-    private Category getCategory(final String categoryName) {
-        return categoryRepository.findByDescription(categoryName)
-                .orElseThrow(() -> new RuntimeException("Expected Category Not Found"));
+    private Category findCategoryByDescription(final String description) {
+        return categoryRepository.findByDescription(description)
+                .orElseThrow(() -> new RuntimeException("Expected Category Not Found. Description is '" + description + "'."));
     }
 
-    private UnitOfMeasure getUnitOfMeasure(final String description) {
+    private UnitOfMeasure findUnitOfMeasureByDescription(final String description) {
         return unitOfMeasureRepository.findByDescription(description)
-                .orElseThrow(() -> new RuntimeException("Expected Unit Not Found. Unit type is '" + description + "'"));
+                .orElseThrow(() -> new RuntimeException("Expected Unit Not Found. Unit type is '" + description + "'."));
     }
 }
