@@ -14,6 +14,7 @@ import ru.vorobyoff.recipeapp.repositories.RecipeRepository;
 import ru.vorobyoff.recipeapp.repositories.UnitOfMeasureRepository;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 import static ru.vorobyoff.recipeapp.domain.Difficulty.EASY;
 import static ru.vorobyoff.recipeapp.domain.Difficulty.MODERATE;
@@ -56,9 +57,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         log.info("Categories have been received.");
 
         //Yummy Guac
-        final var guacRecipe = new Recipe(10, 0, "Perfect Guacamole", EASY,
-                "1 Cut avocado, remove flesh: Cut the avocados in half. Remove seed. Score the inside of the avocado " +
-                        "with a blunt knife and scoop out the flesh with a spoon\n" +
+        final var guacRecipe = Recipe.builder().prepTime(10).cookTime(0).description("Perfect Guacamole")
+                .categories(Set.of(americanCategory, mexicanCategory))
+                .difficulty(EASY).direction("1 Cut avocado, remove flesh: Cut the avocados in half. " +
+                        "Remove seed. Score the inside of the avocado with a blunt knife and scoop out the flesh with a spoon\n" +
                         "2 Mash with a fork: Using a fork, roughly mash the avocado. (Don't overdo it! The guacamole should" +
                         "be a little chunky.)\n" +
                         "3 Add salt, lime juice, and the rest: Sprinkle with salt and lime (or lemon) juice. The acid in " +
@@ -74,9 +76,9 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
                         "so if you want to add chopped tomato to your guacamole, add it just before serving.\n" +
                         "\n" +
                         "\n" +
-                        "Read more: http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvpiV9Sd");
+                        "Read more: http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvpiV9Sd").build();
 
-        final var guacNotes = new Note("For a very quick guacamole just take a 1/4 cup of " +
+        final var guacNotes = Note.builder().recipeNote("For a very quick guacamole just take a 1/4 cup of " +
                 "salsa and mix it in with your mashed avocados.\n" +
                 "Feel free to experiment! One classic Mexican guacamole has pomegranate seeds and chunks of peaches in it " +
                 "(a Diana Kennedy favorite). Try guacamole with added pineapple, mango, or strawberries.\n" +
@@ -86,23 +88,21 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
                 "Purists may be horrified, but so what? It tastes great.\n" +
                 "\n" +
                 "\n" +
-                "Read more: http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvoun5ws");
+                "Read more: http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvoun5ws").build();
 
         guacRecipe.setNote(guacNotes);
 
-        guacRecipe.addIngredients(new Ingredient("ripe avocados", new BigDecimal(2), guacRecipe, eachUom),
-                new Ingredient("Kosher salt", new BigDecimal(".5"), guacRecipe, teaspoonUom),
-                new Ingredient("fresh lime juice or lemon juice", new BigDecimal(2), guacRecipe, tableSpoonUom),
-                new Ingredient("minced red onion or thinly sliced green onion", new BigDecimal(2), guacRecipe, tableSpoonUom),
-                new Ingredient("serrano chiles, stems and seeds removed, minced", new BigDecimal(2), guacRecipe, eachUom),
-                new Ingredient("Cilantro", new BigDecimal(2), guacRecipe, tableSpoonUom),
-                new Ingredient("freshly grated black pepper", new BigDecimal(2), guacRecipe, dashUom),
-                new Ingredient("ripe tomato, seeds and pulp removed, chopped", new BigDecimal(".5"), guacRecipe, eachUom));
+        guacRecipe.addIngredients(Ingredient.builder().description("minced red onion or thinly sliced green onion").amount(new BigDecimal(2)).recipe(guacRecipe).uom(tableSpoonUom).build(),
+                Ingredient.builder().description("serrano chiles, stems and seeds removed, minced").amount(new BigDecimal(2)).recipe(guacRecipe).uom(eachUom).build(),
+                Ingredient.builder().description("ripe tomato, seeds and pulp removed, chopped").amount(new BigDecimal(".5")).recipe(guacRecipe).uom(eachUom).build(),
+                Ingredient.builder().description("fresh lime juice or lemon juice").amount(new BigDecimal(2)).recipe(guacRecipe).uom(tableSpoonUom).build(),
+                Ingredient.builder().description("freshly grated black pepper").amount(new BigDecimal(2)).recipe(guacRecipe).uom(dashUom).build(),
+                Ingredient.builder().description("Kosher salt").amount(new BigDecimal(".5")).recipe(guacRecipe).uom(teaspoonUom).build(),
+                Ingredient.builder().description("Cilantro").amount(new BigDecimal(2)).recipe(guacRecipe).uom(tableSpoonUom).build(),
+                Ingredient.builder().description("ripe avocados").amount(new BigDecimal(2)).recipe(guacRecipe).uom(eachUom).build());
 
-        guacRecipe.addCategories(americanCategory, mexicanCategory);
-
-        final var tacosRecipe = new Recipe(9, 20, "Spicy Grilled Chicken Taco", MODERATE,
-                "1 Prepare a gas or charcoal grill for medium-high, direct heat.\n" +
+        final var tacosRecipe = Recipe.builder().prepTime(9).cookTime(20).description("Spicy Grilled Chicken Taco")
+                .difficulty(MODERATE).direction("1 Prepare a gas or charcoal grill for medium-high, direct heat.\n" +
                         "2 Make the marinade and coat the chicken: In a large bowl, stir together the chili powder, " +
                         "oregano, cumin, sugar, salt, garlic and orange zest. Stir in the orange juice and olive oil to " +
                         "make a loose paste. Add the chicken to the bowl and toss to coat all over.\n" +
@@ -120,9 +120,9 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
                         "with the thinned sour cream. Serve with lime wedges.\n" +
                         "\n" +
                         "\n" +
-                        "Read more: http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/#ixzz4jvtrAnNm");
+                        "Read more: http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/#ixzz4jvtrAnNm").build();
 
-        final var tacoNotes = new Note("We have a family motto and it is this: Everything " +
+        final var tacoNotes = Note.builder().recipeNote("We have a family motto and it is this: Everything " +
                 "goes better in a tortilla.\n" +
                 "Any and every kind of leftover can go inside a warm tortilla, usually with a healthy dose of pickled " +
                 "jalapenos. I can always sniff out a late-night snacker when the aroma of tortillas heating in a hot pan " +
@@ -134,29 +134,29 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
                 "tacos and dig in. The whole meal comes together in about 30 minutes!\n" +
                 "\n" +
                 "\n" +
-                "Read more: http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/#ixzz4jvu7Q0MJ");
+                "Read more: http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/#ixzz4jvu7Q0MJ").build();
 
         tacosRecipe.setNote(tacoNotes);
 
-        tacosRecipe.addIngredients(new Ingredient("Ancho Chili Powder", new BigDecimal(2), tacosRecipe, tableSpoonUom),
-                new Ingredient("Dried Oregano", new BigDecimal(1), tacosRecipe, teaspoonUom),
-                new Ingredient("Dried Cumin", new BigDecimal(1), tacosRecipe, teaspoonUom),
-                new Ingredient("Sugar", new BigDecimal(1), tacosRecipe, teaspoonUom),
-                new Ingredient("Salt", new BigDecimal(".5"), tacosRecipe, teaspoonUom),
-                new Ingredient("Clove of Garlic, Choppedr", new BigDecimal(1), tacosRecipe, eachUom),
-                new Ingredient("finely grated orange zestr", new BigDecimal(1), tacosRecipe, tableSpoonUom),
-                new Ingredient("fresh-squeezed orange juice", new BigDecimal(3), tacosRecipe, tableSpoonUom),
-                new Ingredient("Olive Oil", new BigDecimal(2), tacosRecipe, tableSpoonUom),
-                new Ingredient("boneless chicken thighs", new BigDecimal(4), tacosRecipe, tableSpoonUom),
-                new Ingredient("small corn tortillasr", new BigDecimal(8), tacosRecipe, eachUom),
-                new Ingredient("packed baby arugula", new BigDecimal(3), tacosRecipe, cupsUom),
-                new Ingredient("medium ripe avocados, slic", new BigDecimal(2), tacosRecipe, eachUom),
-                new Ingredient("radishes, thinly sliced", new BigDecimal(4), tacosRecipe, eachUom),
-                new Ingredient("cherry tomatoes, halved", new BigDecimal(".5"), tacosRecipe, pintUom),
-                new Ingredient("red onion, thinly sliced", new BigDecimal(".25"), tacosRecipe, eachUom),
-                new Ingredient("Roughly chopped cilantro", new BigDecimal(4), tacosRecipe, eachUom),
-                new Ingredient("cup sour cream thinned with 1/4 cup milk", new BigDecimal(4), tacosRecipe, cupsUom),
-                new Ingredient("lime, cut into wedges", new BigDecimal(4), tacosRecipe, eachUom));
+        tacosRecipe.addIngredients(Ingredient.builder().description("Ancho Chili Powder").amount(new BigDecimal(2)).recipe(tacosRecipe).uom(tableSpoonUom).build(),
+                Ingredient.builder().description("cup sour cream thinned with 1/4 cup milk").amount(new BigDecimal(4)).recipe(tacosRecipe).uom(cupsUom).build(),
+                Ingredient.builder().description("fresh-squeezed orange juice").amount(new BigDecimal(3)).recipe(tacosRecipe).uom(tableSpoonUom).build(),
+                Ingredient.builder().description("finely grated orange zestr").amount(new BigDecimal(1)).recipe(tacosRecipe).uom(tableSpoonUom).build(),
+                Ingredient.builder().description("boneless chicken thighs").amount(new BigDecimal(4)).recipe(tacosRecipe).uom(tableSpoonUom).build(),
+                Ingredient.builder().description("red onion, thinly sliced").amount(new BigDecimal(".25")).recipe(tacosRecipe).uom(eachUom).build(),
+                Ingredient.builder().description("cherry tomatoes, halved").amount(new BigDecimal(".5")).recipe(tacosRecipe).uom(pintUom).build(),
+                Ingredient.builder().description("medium ripe avocados, slic").amount(new BigDecimal(2)).recipe(tacosRecipe).uom(eachUom).build(),
+                Ingredient.builder().description("Clove of Garlic, Choppedr").amount(new BigDecimal(1)).recipe(tacosRecipe).uom(eachUom).build(),
+                Ingredient.builder().description("Roughly chopped cilantro").amount(new BigDecimal(4)).recipe(tacosRecipe).uom(eachUom).build(),
+                Ingredient.builder().description("radishes, thinly sliced").amount(new BigDecimal(4)).recipe(tacosRecipe).uom(eachUom).build(),
+                Ingredient.builder().description("lime, cut into wedges").amount(new BigDecimal(4)).recipe(tacosRecipe).uom(eachUom).build(),
+                Ingredient.builder().description("small corn tortillasr").amount(new BigDecimal(8)).recipe(tacosRecipe).uom(eachUom).build(),
+                Ingredient.builder().description("packed baby arugula").amount(new BigDecimal(3)).recipe(tacosRecipe).uom(cupsUom).build(),
+                Ingredient.builder().description("Dried Oregano").amount(new BigDecimal(1)).recipe(tacosRecipe).uom(teaspoonUom).build(),
+                Ingredient.builder().description("Dried Cumin").amount(new BigDecimal(1)).recipe(tacosRecipe).uom(teaspoonUom).build(),
+                Ingredient.builder().description("Olive Oil").amount(new BigDecimal(2)).recipe(tacosRecipe).uom(tableSpoonUom).build(),
+                Ingredient.builder().description("Salt").amount(new BigDecimal(".5")).recipe(tacosRecipe).uom(teaspoonUom).build(),
+                Ingredient.builder().description("Sugar").amount(new BigDecimal(1)).recipe(tacosRecipe).uom(teaspoonUom).build());
 
         tacosRecipe.addCategories(americanCategory, mexicanCategory);
 

@@ -1,33 +1,31 @@
 package ru.vorobyoff.recipeapp.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode.Exclude;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
-import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-@Data
 @Entity
-@RequiredArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor(onConstructor_ = @Deprecated, access = PROTECTED)
-public class Note {
+public class Note extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
-    @Exclude
     @OneToOne
     private Recipe recipe;
-    @NonNull
     @Lob
     private String recipeNote;
+
+    @Builder
+    public Note(final Long id, final Recipe recipe, final String recipeNote) {
+        super(id);
+        this.recipe = recipe;
+        this.recipeNote = recipeNote;
+    }
 }

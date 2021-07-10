@@ -1,26 +1,25 @@
 package ru.vorobyoff.recipeapp.domain;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
-import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-@Data
 @Entity
-@RequiredArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor(onConstructor_ = @Deprecated, access = PROTECTED)
-public class UnitOfMeasure {
+public class UnitOfMeasure extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
-    @NonNull
     private String description;
+
+    @Builder
+    public UnitOfMeasure(final Long id, final String description) {
+        super(id);
+        this.description = description;
+    }
 }

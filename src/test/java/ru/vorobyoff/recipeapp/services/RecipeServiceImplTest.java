@@ -11,7 +11,6 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
-import static ru.vorobyoff.recipeapp.domain.Difficulty.EASY;
 
 class RecipeServiceImplTest {
 
@@ -27,8 +26,7 @@ class RecipeServiceImplTest {
 
     @Test
     void getRecipes() {
-        final var recipe = new Recipe(0, 1, "description", EASY, "direction");
-        final Set<Recipe> testRecipes = Set.of(recipe);
+        final Set<Recipe> testRecipes = Set.of(Recipe.builder().build());
 
         when(repository.findAll()).thenReturn(testRecipes);
 

@@ -1,33 +1,32 @@
 package ru.vorobyoff.recipeapp.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode.Exclude;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import java.util.HashSet;
 import java.util.Set;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import static java.util.Objects.isNull;
 import static lombok.AccessLevel.PROTECTED;
 
-@Data
 @Entity
-@RequiredArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor(onConstructor_ = @Deprecated, access = PROTECTED)
-public class Category {
+public class Category extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
-    @NonNull
     private String description;
-    @Exclude
-    @NonNull
     @ManyToMany(mappedBy = "categories")
     private Set<Recipe> recipes;
+
+    @Builder
+    public Category(final Long id, final String description, final Set<Recipe> recipes) {
+        super(id);
+        this.description = description;
+        this.recipes = isNull(recipes) ? new HashSet<>() : recipes;
+    }
 }

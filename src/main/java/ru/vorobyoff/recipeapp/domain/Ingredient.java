@@ -1,39 +1,36 @@
 package ru.vorobyoff.recipeapp.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode.Exclude;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import java.math.BigDecimal;
 
-import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-@Data
 @Entity
-@RequiredArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor(onConstructor_ = @Deprecated, access = PROTECTED)
-public class Ingredient {
+public class Ingredient extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
-    @NonNull
     private String description;
-    @NonNull
     private BigDecimal amount;
-    @Exclude
-    @NonNull
     @ManyToOne
     private Recipe recipe;
-    @NonNull
     @OneToOne
     private UnitOfMeasure uom;
+
+    @Builder
+    public Ingredient(final Long id, final String description, final BigDecimal amount, final Recipe recipe, final UnitOfMeasure uom) {
+        super(id);
+        this.description = description;
+        this.amount = amount;
+        this.recipe = recipe;
+        this.uom = uom;
+    }
 }

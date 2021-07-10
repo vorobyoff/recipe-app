@@ -1,14 +1,12 @@
 package ru.vorobyoff.recipeapp.domain;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
@@ -18,28 +16,22 @@ import javax.persistence.OneToOne;
 import java.util.HashSet;
 import java.util.Set;
 
+import static java.util.Objects.isNull;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.STRING;
-import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-@Data
 @Entity
-@RequiredArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor(onConstructor_ = @Deprecated, access = PROTECTED)
-public class Recipe {
+public class Recipe extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
-    @NonNull
     private Integer prepTime;
-    @NonNull
     private Integer cookTime;
     private Integer serving;
     private Integer source;
     private String url;
-    @NonNull
     private String description;
     @OneToOne(cascade = ALL)
     private Note note;
@@ -47,7 +39,6 @@ public class Recipe {
     private Byte[] image;
     @OneToMany(cascade = ALL, mappedBy = "recipe")
     private Set<Ingredient> ingredients = new HashSet<>();
-    @NonNull
     @Enumerated(STRING)
     private Difficulty difficulty;
     @ManyToMany
@@ -56,8 +47,26 @@ public class Recipe {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
     @Lob
-    @NonNull
     private String direction;
+
+    @Builder
+    public Recipe(final Long id, final Integer prepTime, final Integer cookTime, final Integer serving, final Integer source,
+                  final String url, final String description, final Note note, final Byte[] image, final Set<Ingredient> ingredients,
+                  final Difficulty difficulty, final Set<Category> categories, final String direction) {
+        super(id);
+        this.prepTime = prepTime;
+        this.cookTime = cookTime;
+        this.serving = serving;
+        this.source = source;
+        this.url = url;
+        this.description = description;
+        this.note = note;
+        this.image = image;
+        this.ingredients = isNull(ingredients) ? new HashSet<>() : ingredients;
+        this.difficulty = difficulty;
+        this.categories = isNull(categories) ? new HashSet<>() : categories;
+        this.direction = direction;
+    }
 
     public void setNote(final Note note) {
         note.setRecipe(this);
