@@ -1,6 +1,5 @@
 package ru.vorobyoff.recipeapp.commands;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,11 +7,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
-public class NoteCommand {
+public class NoteCommand extends BaseCommand {
 
     private RecipeCommand recipeCommand;
     private String recipeNote;
+
+    @Builder
+    public NoteCommand(final Long id, final RecipeCommand recipeCommand, final String recipeNote) {
+        super(id);
+        this.recipeCommand = recipeCommand;
+        this.recipeNote = recipeNote;
+    }
 }

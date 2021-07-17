@@ -1,6 +1,7 @@
 package ru.vorobyoff.recipeapp.converters;
 
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import ru.vorobyoff.recipeapp.commands.CategoryCommand;
 import ru.vorobyoff.recipeapp.commands.IngredientCommand;
@@ -13,51 +14,56 @@ import ru.vorobyoff.recipeapp.domain.Recipe;
 
 import java.util.Set;
 
+import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toSet;
 
 @Component
-public final class RecipeCommandToRecipeConverter implements Converter<RecipeCommand, Recipe> {
+public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
 
     private final Converter<IngredientCommand, Ingredient> ingredientConverter;
     private final Converter<CategoryCommand, Category> categoryConverter;
-    private final Converter<NoteCommand, Note> noteConverter;
+    private final Converter<NoteCommand, Note> notesConverter;
 
-    public RecipeCommandToRecipeConverter(final Converter<IngredientCommand, Ingredient> ingredientConverter,
-                                          final Converter<CategoryCommand, Category> categoryConverter,
-                                          final Converter<NoteCommand, Note> noteConverter) {
+    public RecipeCommandToRecipe(final Converter<IngredientCommand, Ingredient> ingredientConverter,
+                                 final Converter<CategoryCommand, Category> categoryConverter,
+                                 final Converter<NoteCommand, Note> notesConverter) {
         this.ingredientConverter = ingredientConverter;
         this.categoryConverter = categoryConverter;
-        this.noteConverter = noteConverter;
+        this.notesConverter = notesConverter;
     }
 
+    @Nullable
     @Override
-    public Recipe convert(final RecipeCommand source) {
+    public Recipe convert(RecipeCommand source) {
         if (source == null) return null;
 
-        final var ingredient = convertIngredients(source.getIngredients());
+        final var ingredients = convertIngredients(source.getIngredients());
         final var categories = convertCategories(source.getCategories());
-        final var note = noteConverter.convert(source.getNote());
+        final var note = notesConverter.convert(source.getNote());
 
         return Recipe.builder()
                 .description(source.getDescription())
                 .difficulty(source.getDifficulty())
                 .direction(source.getDirection())
-                .prepTime(source.getPrepTime())
                 .cookTime(source.getCookTime())
+                .prepTime(source.getPrepTime())
                 .serving(source.getServing())
-                .ingredients(ingredient)
+                .ingredients(ingredients)
+                .source(source.getSource())
                 .categories(categories)
-                .image(source.getImage())
                 .url(source.getUrl())
+                .id(source.getId())
                 .note(note)
                 .build();
     }
 
-    private Set<Ingredient> convertIngredients(final Set<IngredientCommand> commands) {
-        return commands.stream().map(ingredientConverter::convert).collect(toSet());
+    private Set<Category> convertCategories(final Set<CategoryCommand> commands) {
+        if (commands == null || commands.isEmpty()) return emptySet();
+        return commands.stream().map(categoryConverter::convert).collect(toSet());
     }
 
-    private Set<Category> convertCategories(final Set<CategoryCommand> commands) {
-        return commands.stream().map(categoryConverter::convert).collect(toSet());
+    private Set<Ingredient> convertIngredients(final Set<IngredientCommand> commands) {
+        if (commands == null || commands.isEmpty()) return emptySet();
+        return commands.stream().map(ingredientConverter::convert).collect(toSet());
     }
 }

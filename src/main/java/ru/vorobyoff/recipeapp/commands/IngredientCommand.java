@@ -1,6 +1,5 @@
 package ru.vorobyoff.recipeapp.commands;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,13 +9,20 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
-public class IngredientCommand {
+public class IngredientCommand extends BaseCommand {
 
     private UnitOfMeasureCommand uofCommand;
     private RecipeCommand recipeCommand;
     private String description;
     private BigDecimal amount;
+
+    @Builder
+    public IngredientCommand(final Long id, final UnitOfMeasureCommand uofCommand, final RecipeCommand recipeCommand, final String description, final BigDecimal amount) {
+        super(id);
+        this.uofCommand = uofCommand;
+        this.recipeCommand = recipeCommand;
+        this.description = description;
+        this.amount = amount;
+    }
 }
