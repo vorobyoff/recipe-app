@@ -1,5 +1,6 @@
 package ru.vorobyoff.recipeapp.services;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.vorobyoff.recipeapp.domain.Recipe;
@@ -11,13 +12,10 @@ import java.util.Set;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
+@RequiredArgsConstructor
 public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository repository;
-
-    public RecipeServiceImpl(final RecipeRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public Set<Recipe> getRecipes() {

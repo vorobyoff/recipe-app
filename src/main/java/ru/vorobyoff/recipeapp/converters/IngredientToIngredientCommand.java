@@ -1,5 +1,6 @@
 package ru.vorobyoff.recipeapp.converters;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -9,13 +10,10 @@ import ru.vorobyoff.recipeapp.domain.Ingredient;
 import ru.vorobyoff.recipeapp.domain.UnitOfMeasure;
 
 @Component
+@RequiredArgsConstructor
 public class IngredientToIngredientCommand implements Converter<Ingredient, IngredientCommand> {
 
     private final Converter<UnitOfMeasure, UnitOfMeasureCommand> uomConverter;
-
-    public IngredientToIngredientCommand(final Converter<UnitOfMeasure, UnitOfMeasureCommand> uomConverter) {
-        this.uomConverter = uomConverter;
-    }
 
     @Nullable
     @Override

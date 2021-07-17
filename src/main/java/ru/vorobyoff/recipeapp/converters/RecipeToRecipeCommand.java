@@ -1,5 +1,6 @@
 package ru.vorobyoff.recipeapp.converters;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -18,19 +19,12 @@ import static java.util.Collections.emptySet;
 import static java.util.stream.Collectors.toSet;
 
 @Component
+@RequiredArgsConstructor
 public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
 
     private final Converter<Ingredient, IngredientCommand> ingredientConverter;
     private final Converter<Category, CategoryCommand> categoryConverter;
     private final Converter<Note, NoteCommand> notesConverter;
-
-    public RecipeToRecipeCommand(final Converter<Ingredient, IngredientCommand> ingredientConverter,
-                                 final Converter<Category, CategoryCommand> categoryConverter,
-                                 final Converter<Note, NoteCommand> notesConverter) {
-        this.ingredientConverter = ingredientConverter;
-        this.categoryConverter = categoryConverter;
-        this.notesConverter = notesConverter;
-    }
 
     @Nullable
     @Override

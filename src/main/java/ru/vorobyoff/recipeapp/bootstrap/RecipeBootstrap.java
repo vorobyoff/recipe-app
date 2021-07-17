@@ -1,5 +1,6 @@
 package ru.vorobyoff.recipeapp.bootstrap;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -21,18 +22,12 @@ import static ru.vorobyoff.recipeapp.domain.Difficulty.MODERATE;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     private final RecipeRepository recipeRepository;
     private final CategoryRepository categoryRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
-
-    public RecipeBootstrap(final RecipeRepository recipeRepository, final CategoryRepository categoryRepository,
-                           final UnitOfMeasureRepository unitOfMeasureRepository) {
-        this.recipeRepository = recipeRepository;
-        this.categoryRepository = categoryRepository;
-        this.unitOfMeasureRepository = unitOfMeasureRepository;
-    }
 
     @Override
     public void onApplicationEvent(final ContextRefreshedEvent event) {
@@ -41,8 +36,6 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     }
 
     private void bootstrapRecipes() {
-
-        //get UOMs
         final var eachUom = findUnitOfMeasureByDescription("Each");
         final var tableSpoonUom = findUnitOfMeasureByDescription("Tablespoon");
         final var teaspoonUom = findUnitOfMeasureByDescription("Teaspoon");
@@ -51,12 +44,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         final var cupsUom = findUnitOfMeasureByDescription("Cup");
         log.info("UOMs have been received.");
 
-        //get Categories
         final var americanCategory = findCategoryByDescription("American");
         final var mexicanCategory = findCategoryByDescription("Mexican");
         log.info("Categories have been received.");
 
-        //Yummy Guac
         final var guacRecipe = Recipe.builder().prepTime(10).cookTime(0).description("Perfect Guacamole")
                 .categories(Set.of(americanCategory, mexicanCategory))
                 .difficulty(EASY).direction("1 Cut avocado, remove flesh: Cut the avocados in half. " +

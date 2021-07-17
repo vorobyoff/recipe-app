@@ -18,7 +18,8 @@ public class IngredientCommand extends BaseCommand {
     private BigDecimal amount;
 
     @Builder
-    public IngredientCommand(final Long id, final UnitOfMeasureCommand uofCommand, final RecipeCommand recipeCommand, final String description, final BigDecimal amount) {
+    public IngredientCommand(final Long id, final UnitOfMeasureCommand uofCommand, final RecipeCommand recipeCommand,
+                             final String description, final BigDecimal amount) {
         super(id);
         this.uofCommand = uofCommand;
         this.recipeCommand = recipeCommand;
