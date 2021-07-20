@@ -10,13 +10,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class NoteCommand extends BaseCommand {
 
-    private RecipeCommand recipeCommand;
+    private RecipeCommand recipe;
     private String recipeNote;
 
     @Builder
-    public NoteCommand(final Long id, final RecipeCommand recipeCommand, final String recipeNote) {
+    public NoteCommand(final Long id, final RecipeCommand recipe, final String recipeNote) {
         super(id);
-        this.recipeCommand = recipeCommand;
+        this.recipe = recipe;
         this.recipeNote = recipeNote;
     }
 }

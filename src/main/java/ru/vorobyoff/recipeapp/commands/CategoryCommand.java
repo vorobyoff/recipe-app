@@ -12,13 +12,13 @@ import java.util.Set;
 @NoArgsConstructor
 public class CategoryCommand extends BaseCommand {
 
-    private Set<RecipeCommand> recipeCommands;
+    private Set<RecipeCommand> recipes;
     private String description;
 
     @Builder
-    public CategoryCommand(final Long id, final Set<RecipeCommand> recipeCommands, final String description) {
+    public CategoryCommand(final Long id, final Set<RecipeCommand> recipes, final String description) {
         super(id);
-        this.recipeCommands = recipeCommands;
+        this.recipes = recipes;
         this.description = description;
     }
 }
