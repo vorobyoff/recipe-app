@@ -40,7 +40,7 @@
                             </div>
 
                             <div class="col-md-3">
-                                <p th:text="|${recipe.getPrepTime()} min|"></p>
+                                <p th:text="|${recipe.getPrepTime()} min.|"></p>
                             </div>
 
                             <div class="col-md-3">
@@ -58,7 +58,7 @@
                             </div>
 
                             <div class="col-md-3">
-                                <p th:text="|${recipe.getCookTime()} min|"></p>
+                                <p th:text="|${recipe.getCookTime()} min.|"></p>
                             </div>
 
                             <div class="col-md-3">
@@ -100,9 +100,7 @@
                             <div class="col-md-12">
                                 <ul>
                                     <li th:each="ingredient : ${recipe.getIngredients()}"
-                                        th:text="${(ingredient.getAmount()) + ' ' +
-                                        (ingredient.getUom().getDescription()) + ' - ' +
-                                        (ingredient.getDescription())}"></li>
+                                        th:text="|${ingredient.getAmount()} ${#strings.capitalize(ingredient.getUom().getDescription())} - ${#strings.capitalizeWords(ingredient.getDescription(), '.')}|"></li>
                                 </ul>
                             </div>
                         </div>
@@ -117,7 +115,7 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <p th:text="${recipe.getDirection()}"></p>
+                                <p th:text="${#strings.capitalizeWords(recipe.getDirection(), '.')}"></p>
                             </div>
                         </div>
                     </div>
@@ -125,13 +123,13 @@
 
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h1 class="panel-title">Notes</h1>
+                        <h1 class="panel-title">Note</h1>
                     </div>
 
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <p th:text="${recipe.getNote().getRecipeNote()}"></p>
+                                <p th:text="${#strings.capitalizeWords(recipe.getNote().getRecipeNote(), '.')}"></p>
                             </div>
                         </div>
                     </div>
