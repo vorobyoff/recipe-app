@@ -48,7 +48,7 @@ class IndexControllerTest {
         final var recipes = singletonSet(Recipe.builder().build());
         when(service.getRecipes()).thenReturn(recipes);
         final var captor = forClass(Set.class);
-        assertEquals("index", controller.getIndexPage(model));
+        assertEquals("index", controller.showIndexPage(model));
         verify(service).getRecipes();
         verify(model).addAttribute(eq("recipes"), captor.capture());
         final var controllerRecipes = captor.getValue();
