@@ -28,13 +28,19 @@
                                 <th>ID</th>
                                 <th>Description</th>
                                 <th>View</th>
+                                <th>Update</th>
+                                <th>Delete</th>
                             </tr>
                             </thead>
 
                             <tr th:each="recipe : ${recipes}">
                                 <td th:text="${recipe.getId()}"></td>
                                 <td th:text="${recipe.getDescription()}"></td>
-                                <td><a th:href="@{/recipe/show/{recipeId}(recipeId=${recipe.getId()})}">View</a></td>
+                                <td><a th:href="@{/recipe/{recipeId}/show(recipeId=${recipe.getId()})}">View</a></td>
+                                <td><a th:href="@{/recipe/{recipeId}/update(recipeId=${recipe.getId()})}">Update</a>
+                                </td>
+                                <td><a th:href="@{/recipe/{recipeId}/delete(recipeId=${recipe.getId()})}">Delete</a>
+                                </td>
                             </tr>
                         </table>
                     </div>
