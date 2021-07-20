@@ -20,7 +20,7 @@ public class IngredientCommandToIngredient implements Converter<IngredientComman
     public Ingredient convert(IngredientCommand source) {
         if (source == null) return null;
 
-        final var uom = uomConverter.convert(source.getUofCommand());
+        final var uom = uomConverter.convert(source.getUom());
 
         return Ingredient.builder()
                 .description(source.getDescription())

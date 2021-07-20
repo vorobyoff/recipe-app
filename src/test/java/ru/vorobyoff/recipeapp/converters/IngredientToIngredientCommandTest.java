@@ -49,7 +49,7 @@ public class IngredientToIngredientCommandTest {
         final var ingredientCommand = converter.convert(ingredient);
         assertNotNull(ingredientCommand);
 
-        assertNull(ingredientCommand.getUofCommand());
+        assertNull(ingredientCommand.getUom());
         assertEquals(ID_VALUE, ingredientCommand.getId());
         assertEquals(AMOUNT, ingredientCommand.getAmount());
         assertEquals(DESCRIPTION, ingredientCommand.getDescription());
@@ -70,8 +70,8 @@ public class IngredientToIngredientCommandTest {
         final var ingredientCommand = converter.convert(ingredient);
         assertNotNull(ingredientCommand);
 
-        assertNotNull(ingredientCommand.getUofCommand());
-        assertEquals(UOM_ID, ingredientCommand.getUofCommand().getId());
+        assertNotNull(ingredientCommand.getUom());
+        assertEquals(UOM_ID, ingredientCommand.getUom().getId());
         assertEquals(DESCRIPTION, ingredientCommand.getDescription());
         assertEquals(AMOUNT, ingredientCommand.getAmount());
         assertEquals(ID_VALUE, ingredientCommand.getId());

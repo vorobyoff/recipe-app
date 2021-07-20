@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.vorobyoff.recipeapp.commands.IngredientCommand;
 import ru.vorobyoff.recipeapp.commands.UnitOfMeasureCommand;
-import ru.vorobyoff.recipeapp.domain.Recipe;
 
 import java.math.BigDecimal;
 
@@ -13,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class IngredientCommandToIngredientTest {
 
-    private static final Recipe RECIPE = Recipe.builder().build();
     private static final String DESCRIPTION = "Cheeseburger";
     private static final BigDecimal AMOUNT = ONE;
     private static final Long ID_VALUE = 1L;
@@ -41,8 +39,8 @@ public class IngredientCommandToIngredientTest {
         final var unitOfMeasureCommand = UnitOfMeasureCommand.builder().id(UOM_ID).build();
 
         final var command = IngredientCommand.builder()
-                .uofCommand(unitOfMeasureCommand)
                 .description(DESCRIPTION)
+                .uom(unitOfMeasureCommand)
                 .amount(AMOUNT)
                 .id(ID_VALUE)
                 .build();

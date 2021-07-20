@@ -26,7 +26,7 @@ public class IngredientToIngredientCommand implements Converter<Ingredient, Ingr
                 .description(ingredient.getDescription())
                 .amount(ingredient.getAmount())
                 .id(ingredient.getId())
-                .uofCommand(uom)
+                .uom(uom)
                 .build();
     }
 }
