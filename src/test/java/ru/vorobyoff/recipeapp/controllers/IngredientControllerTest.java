@@ -26,9 +26,6 @@ class IngredientControllerTest {
     private RecipeService recipeService;
     private MockMvc mockMvc;
 
-    private IngredientCommand ingredientCommand;
-    private RecipeCommand recipeCommand;
-
     @BeforeEach
     void setUp() {
         openMocks(this);
@@ -38,8 +35,8 @@ class IngredientControllerTest {
 
     @Test
     void showIngredientsOfRecipeByRecipeIdMockMvcTest() throws Exception {
-        ingredientCommand = IngredientCommand.builder().build();
-        recipeCommand = RecipeCommand.builder().ingredients(Set.of(ingredientCommand)).build();
+        final IngredientCommand ingredientCommand = IngredientCommand.builder().build();
+        final RecipeCommand recipeCommand = RecipeCommand.builder().ingredients(Set.of(ingredientCommand)).build();
         ingredientCommand.setRecipe(recipeCommand);
 
         when(recipeService.getRecipeCommandById(anyLong())).thenReturn(recipeCommand);
