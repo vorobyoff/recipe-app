@@ -29,6 +29,7 @@ class RecipeControllerTest {
     private static final String TEST_DESCRIPTION = "Description";
     private static final String TEST_DIRECTION = "Direction";
     private static final long TEST_ID = 1L;
+
     private RecipeController controller;
     @Mock
     private RecipeService service;
@@ -54,7 +55,7 @@ class RecipeControllerTest {
     void showThroughMockMvc() throws Exception {
         when(service.getRecipeById(anyLong())).thenReturn(testRecipe);
 
-        mockMvc.perform(get("/recipe/show/1"))
+        mockMvc.perform(get("/recipe/1/show"))
                 .andExpect(view().name("recipe/show"))
                 .andExpect(model().attributeExists("recipe"))
                 .andExpect(forwardedUrl("recipe/show"))
@@ -110,8 +111,8 @@ class RecipeControllerTest {
                 .contentType(APPLICATION_FORM_URLENCODED)
                 .param("description", "desc")
                 .param("id", ""))
-                .andExpect(view().name("redirect:show/1"))
-                .andExpect(redirectedUrl("show/1"))
+                .andExpect(view().name("redirect:1/show"))
+                .andExpect(redirectedUrl("1/show"))
                 .andExpect(status().is3xxRedirection());
     }
 }
