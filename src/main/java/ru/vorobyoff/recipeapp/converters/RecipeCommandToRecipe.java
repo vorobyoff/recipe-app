@@ -35,7 +35,7 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
         final var categories = convertCategories(source.getCategories());
         final var note = notesConverter.convert(source.getNote());
 
-        return Recipe.builder()
+        final var recipe = Recipe.builder()
                 .description(source.getDescription())
                 .difficulty(source.getDifficulty())
                 .direction(source.getDirection())
@@ -49,6 +49,10 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
                 .id(source.getId())
                 .note(note)
                 .build();
+
+        setupIngredientsRecipe(ingredients, recipe);
+
+        return recipe;
     }
 
     private Set<Category> convertCategories(final Set<CategoryCommand> commands) {
@@ -59,5 +63,10 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
     private Set<Ingredient> convertIngredients(final Set<IngredientCommand> commands) {
         if (commands == null || commands.isEmpty()) return emptySet();
         return commands.stream().map(ingredientConverter::convert).collect(toSet());
+    }
+
+    private void setupIngredientsRecipe(final Set<Ingredient> ingredients, final Recipe recipe) {
+        if (ingredients.isEmpty()) return;
+        ingredients.forEach(i -> i.setRecipe(recipe));
     }
 }
