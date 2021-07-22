@@ -51,10 +51,24 @@ class IngredientRepositoryIT {
 
         final var firstFound = foundIngredients.iterator().next();
         assertNotNull(firstFound);
+        assertNotNull(firstFound.getRecipe());
 
+        assertEquals(testRecipe.getId(), firstFound.getRecipe().getId());
         assertEquals(TEST_DESCRIPTION, firstFound.getDescription());
         assertEquals(testIngredient.getId(), firstFound.getId());
         assertEquals(TEST_AMOUNT, firstFound.getAmount());
+    }
+
+    @Test
+    void findIngredientsByIdAndRecipe_Id() {
+        final var foundIngredientOpt = ingredientRepository.findIngredientsByIdAndRecipe_Id(testIngredient.getId(), testRecipe.getId());
+        assertNotNull(foundIngredientOpt);
+        final var foundIngredient = foundIngredientOpt.orElseThrow();
+
+        assertEquals(testRecipe.getId(), foundIngredient.getRecipe().getId());
+        assertEquals(TEST_DESCRIPTION, foundIngredient.getDescription());
+        assertEquals(testIngredient.getId(), foundIngredient.getId());
+        assertEquals(TEST_AMOUNT, foundIngredient.getAmount());
     }
 
     @AfterEach
