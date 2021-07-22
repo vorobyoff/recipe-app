@@ -37,9 +37,11 @@
                                 <td th:text="${recipe.getId()}"></td>
                                 <td th:text="${recipe.getDescription()}"></td>
                                 <td><a th:href="@{/recipe/{recipeId}/show(recipeId=${recipe.getId()})}">View</a></td>
-                                <td><a th:href="@{/recipe/{recipeId}/update(recipeId=${recipe.getId()})}">Update</a>
+                                <td>
+                                    <a th:href="@{/recipe/{recipeId}/update(recipeId=${recipe.getId()})}">Update</a>
                                 </td>
-                                <td><a th:href="@{/recipe/{recipeId}/delete(recipeId=${recipe.getId()})}">Delete</a>
+                                <td>
+                                    <a th:href="@{/recipe/{recipeId}/delete(recipeId=${recipe.getId()})}">Delete</a>
                                 </td>
                             </tr>
                         </table>
