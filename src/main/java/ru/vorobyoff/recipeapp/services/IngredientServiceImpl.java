@@ -4,7 +4,6 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.vorobyoff.recipeapp.commands.IngredientCommand;
-import ru.vorobyoff.recipeapp.commands.RecipeCommand;
 import ru.vorobyoff.recipeapp.domain.Ingredient;
 import ru.vorobyoff.recipeapp.repositories.IngredientRepository;
 
@@ -38,11 +37,7 @@ public class IngredientServiceImpl implements IngredientService {
         return findIngredientsOfRecipeByItsId(recipeId).stream()
                 .map(ingredientConverter::convert)
                 .filter(Objects::nonNull)
-                .peek(command -> command.setRecipe(
-                        RecipeCommand.builder()
-                                .id(recipeId)
-                                .build()
-                )).collect(toSet());
+                .collect(toSet());
     }
 
     @Override

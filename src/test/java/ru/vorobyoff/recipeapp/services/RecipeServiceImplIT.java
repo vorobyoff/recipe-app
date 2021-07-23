@@ -58,7 +58,7 @@ class RecipeServiceImplIT {
     void getRecipes() {
         when(repository.findAll()).thenReturn(Set.of(testRecipe));
 
-        final var foundRecipes = recipeService.getRecipes();
+        final var foundRecipes = recipeService.findAllRecipes();
         assertNotNull(foundRecipes);
         assertFalse(foundRecipes.isEmpty());
 
@@ -72,7 +72,7 @@ class RecipeServiceImplIT {
     void getRecipeById() {
         when(repository.findById(anyLong())).thenReturn(Optional.of(testRecipe));
 
-        final var foundRecipe = recipeService.getRecipeById(anyLong());
+        final var foundRecipe = recipeService.findRecipeById(anyLong());
         assertNotNull(foundRecipe);
         validateRecipe(foundRecipe);
 
@@ -94,7 +94,7 @@ class RecipeServiceImplIT {
     void getRecipeCommandById() {
         when(repository.findById(anyLong())).thenReturn(Optional.of(testRecipe));
 
-        final var foundCommand = recipeService.getRecipeCommandById(anyLong());
+        final var foundCommand = recipeService.findRecipeCommandById(anyLong());
         assertNotNull(foundCommand);
         assertEquals(TEST_ID, foundCommand.getId());
 

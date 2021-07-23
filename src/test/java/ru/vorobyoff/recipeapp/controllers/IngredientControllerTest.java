@@ -36,7 +36,7 @@ class IngredientControllerTest {
 
     @Test
     void showIngredientsOfRecipeByRecipeIdMockMvcTest() throws Exception {
-        final IngredientCommand ingredientCommand = IngredientCommand.builder().build();
+        final var ingredientCommand = IngredientCommand.builder().build();
 
         when(ingredientService.findIngredientCommandOfRecipeByItsId(anyLong())).thenReturn(singleton(ingredientCommand));
 

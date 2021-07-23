@@ -9,6 +9,8 @@ import ru.vorobyoff.recipeapp.commands.UnitOfMeasureCommand;
 import ru.vorobyoff.recipeapp.domain.Ingredient;
 import ru.vorobyoff.recipeapp.domain.UnitOfMeasure;
 
+import static java.util.Objects.isNull;
+
 @Component
 @RequiredArgsConstructor
 public class IngredientToIngredientCommand implements Converter<Ingredient, IngredientCommand> {
@@ -22,11 +24,15 @@ public class IngredientToIngredientCommand implements Converter<Ingredient, Ingr
 
         final var uom = uomConverter.convert(ingredient.getUom());
 
-        return IngredientCommand.builder()
+        final var command = IngredientCommand.builder()
                 .description(ingredient.getDescription())
                 .amount(ingredient.getAmount())
                 .id(ingredient.getId())
                 .uom(uom)
                 .build();
+
+        if (!isNull(ingredient.getRecipe())) command.setRecipeId(ingredient.getRecipe().getId());
+
+        return command;
     }
 }

@@ -3,11 +3,13 @@ package ru.vorobyoff.recipeapp.services;
 import ru.vorobyoff.recipeapp.commands.IngredientCommand;
 import ru.vorobyoff.recipeapp.domain.Ingredient;
 
+import java.util.Set;
+
 public interface IngredientService {
 
-    Iterable<Ingredient> findIngredientsOfRecipeByItsId(final Long recipeId);
+    Set<Ingredient> findIngredientsOfRecipeByItsId(final Long recipeId);
 
-    Iterable<IngredientCommand> findIngredientCommandOfRecipeByItsId(final Long recipeId);
+    Set<IngredientCommand> findIngredientCommandOfRecipeByItsId(final Long recipeId);
 
     Ingredient findIngredientByRecipeIdAndIngredientId(final Long ingredientId, final Long recipeId);
 }

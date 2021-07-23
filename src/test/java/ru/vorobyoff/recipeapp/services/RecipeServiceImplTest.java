@@ -42,7 +42,7 @@ class RecipeServiceImplTest {
     @Test
     void getRecipes() {
         when(repository.findAll()).thenReturn(Set.of(testRecipe));
-        final var recipes = service.getRecipes();
+        final var recipes = service.findAllRecipes();
         assertEquals(1, recipes.size());
         verify(repository).findAll();
     }
@@ -50,7 +50,7 @@ class RecipeServiceImplTest {
     @Test
     void getRecipesNotFoundCase() {
         when(repository.findAll()).thenReturn(emptySet());
-        final var recipes = service.getRecipes();
+        final var recipes = service.findAllRecipes();
         assertTrue(recipes.isEmpty());
         verify(repository).findAll();
     }
@@ -58,7 +58,7 @@ class RecipeServiceImplTest {
     @Test
     void getRecipeById() {
         when(repository.findById(anyLong())).thenReturn(of(testRecipe));
-        final var found = service.getRecipeById(anyLong());
+        final var found = service.findRecipeById(anyLong());
         assertEquals(RECIPE_TEST_ID, found.getId());
         verify(repository, never()).findAll();
         verify(repository).findById(anyLong());
@@ -67,7 +67,7 @@ class RecipeServiceImplTest {
     @Test
     void getRecipeByIdNotFoundCase() {
         when(repository.findById(anyLong())).thenReturn(empty());
-        assertThrows(ResponseStatusException.class, () -> service.getRecipeById(anyLong()));
+        assertThrows(ResponseStatusException.class, () -> service.findRecipeById(anyLong()));
         verify(repository, never()).findAll();
         verify(repository).findById(anyLong());
     }

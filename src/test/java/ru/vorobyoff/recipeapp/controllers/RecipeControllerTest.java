@@ -53,7 +53,7 @@ class RecipeControllerTest {
 
     @Test
     void showThroughMockMvc() throws Exception {
-        when(service.getRecipeById(anyLong())).thenReturn(testRecipe);
+        when(service.findRecipeById(anyLong())).thenReturn(testRecipe);
 
         mockMvc.perform(get("/recipe/1/show"))
                 .andExpect(view().name("recipe/show"))
@@ -62,12 +62,12 @@ class RecipeControllerTest {
                 .andExpect(model().hasNoErrors())
                 .andExpect(status().isOk());
 
-        verify(service).getRecipeById(anyLong());
+        verify(service).findRecipeById(anyLong());
     }
 
     @Test
     void show() {
-        when(service.getRecipeById(anyLong())).thenReturn(testRecipe);
+        when(service.findRecipeById(anyLong())).thenReturn(testRecipe);
 
         final var viewName = controller.showRecipeById(TEST_ID, model);
         assertEquals("recipe/show", viewName);
@@ -76,14 +76,14 @@ class RecipeControllerTest {
         verify(model).addAttribute(anyString(), captor.capture());
         final var modelRecipe = captor.getValue();
         assertEquals(testRecipe.getId(), modelRecipe.getId());
-        verify(service).getRecipeById(anyLong());
+        verify(service).findRecipeById(anyLong());
     }
 
     @Test
     void showNotFoundCase() {
-        when(service.getRecipeById(anyLong())).thenThrow(new ResponseStatusException(NOT_FOUND, "Recipe with the given id does not exist."));
+        when(service.findRecipeById(anyLong())).thenThrow(new ResponseStatusException(NOT_FOUND, "Recipe with the given id does not exist."));
         assertThrows(ResponseStatusException.class, () -> controller.showRecipeById(TEST_ID, model));
-        verify(service).getRecipeById(anyLong());
+        verify(service).findRecipeById(anyLong());
     }
 
     @Test

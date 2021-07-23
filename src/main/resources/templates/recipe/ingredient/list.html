@@ -35,15 +35,15 @@
                                 <td th:text="${ingredient.getId()}"></td>
                                 <td th:text="${ingredient.getAmount()} + ' ' + ${ingredient.getUom().getDescription()} + ' ' + ${ingredient.getDescription()} + '/show'"></td>
                                 <td>
-                                    <a th:href="@{'/recipe/' + ${ingredient.getRecipe().getId()} + '/ingredient/' + ${ingredient.getId()} + '/show'}">View</a>
+                                    <a th:href="@{'/recipe/' + ${ingredient.getRecipeId()} + '/ingredient/' + ${ingredient.getId()} + '/show'}">View</a>
                                 </td>
 
                                 <td>
-                                    <a th:href="@{'/recipe/' + ${ingredient.getRecipe().getId()} + '/ingredient/' + ${ingredient.getId()} + '/update'}">Update</a>
+                                    <a th:href="@{'/recipe/' + ${ingredient.getRecipeId()} + '/ingredient/' + ${ingredient.getId()} + '/update'}">Update</a>
                                 </td>
 
                                 <td>
-                                    <a th:href="@{'/recipe/' + ${ingredient.getRecipe().getId()} + '/ingredient/' + ${ingredient.getId()} + '/delete'}">Delete</a>
+                                    <a th:href="@{'/recipe/' + ${ingredient.getRecipeId()} + '/ingredient/' + ${ingredient.getId()} + '/delete'}">Delete</a>
                                 </td>
                             </tr>
                         </table>

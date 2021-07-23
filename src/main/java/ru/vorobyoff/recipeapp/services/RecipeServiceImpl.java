@@ -23,14 +23,14 @@ public class RecipeServiceImpl implements RecipeService {
     private final RecipeRepository repository;
 
     @Override
-    public Set<Recipe> getRecipes() {
+    public Set<Recipe> findAllRecipes() {
         final var recipes = new HashSet<Recipe>();
         repository.findAll().iterator().forEachRemaining(recipes::add);
         return recipes;
     }
 
     @Override
-    public Recipe getRecipeById(final Long id) {
+    public Recipe findRecipeById(final Long id) {
         return repository.findById(id).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Recipe with the given id does not exist."));
     }
 
@@ -45,8 +45,8 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     @Transactional
-    public RecipeCommand getRecipeCommandById(final Long id) {
-        return toRecipeCommandConverter.convert(getRecipeById(id));
+    public RecipeCommand findRecipeCommandById(final Long id) {
+        return toRecipeCommandConverter.convert(findRecipeById(id));
     }
 
     @Override
