@@ -1,5 +1,6 @@
 package ru.vorobyoff.recipeapp.services;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,15 +16,11 @@ import static java.util.stream.Collectors.toSet;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
+@RequiredArgsConstructor
 public class IngredientServiceImpl implements IngredientService {
 
     private final Converter<Ingredient, IngredientCommand> ingredientConverter;
     private final IngredientRepository repository;
-
-    public IngredientServiceImpl(final IngredientRepository repository, final Converter<Ingredient, IngredientCommand> ingredientConverter) {
-        this.repository = repository;
-        this.ingredientConverter = ingredientConverter;
-    }
 
     @Override
     public Set<Ingredient> findIngredientsOfRecipeByItsId(final Long recipeId) {
