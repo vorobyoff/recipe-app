@@ -13,27 +13,27 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.vorobyoff.recipeapp.domain.Difficulty.EASY;
 
-public class RecipeToRecipeCommandTest {
+final class RecipeToRecipeCommandTest {
 
-    public static final String DESCRIPTION = "My Recipe";
-    public static final String DIRECTION = "Directions";
-    public static final Difficulty DIFFICULTY = EASY;
-    public static final String URL = "Some URL";
-    public static final Integer COOK_TIME = 5;
-    public static final Integer PREP_TIME = 7;
-    public static final Long INGRED_ID_1 = 3L;
-    public static final Long INGRED_ID_2 = 4L;
-    public static final Integer SERVINGS = 3;
-    public static final Long RECIPE_ID = 1L;
-    public static final Long CAT_ID_1 = 1L;
-    public static final Long NOTES_ID = 9L;
-    public static final Long CAT_ID_2 = 2L;
-    public static final Integer SOURCE = 1;
+    private static final String DESCRIPTION = "My Recipe";
+    private static final String DIRECTION = "Directions";
+    private static final Difficulty DIFFICULTY = EASY;
+    private static final String URL = "Some URL";
+    private static final Integer COOK_TIME = 5;
+    private static final Integer PREP_TIME = 7;
+    private static final Long INGRED_ID_1 = 3L;
+    private static final Long INGRED_ID_2 = 4L;
+    private static final Integer SERVINGS = 3;
+    private static final Long RECIPE_ID = 1L;
+    private static final Long CAT_ID_1 = 1L;
+    private static final Long NOTES_ID = 9L;
+    private static final Long CAT_ID_2 = 2L;
+    private static final Integer SOURCE = 1;
 
     private RecipeToRecipeCommand converter;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         converter = new RecipeToRecipeCommand(
                 new IngredientToIngredientCommand(new UnitOfMeasureToUnitOfMeasureCommand()),
                 new CategoryToCategoryCommand(),
@@ -41,17 +41,17 @@ public class RecipeToRecipeCommandTest {
     }
 
     @Test
-    public void testNullObject() {
+    void testNullObject() {
         assertNull(converter.convert(null));
     }
 
     @Test
-    public void testEmptyObject() {
+    void testEmptyObject() {
         assertNotNull(converter.convert(Recipe.builder().build()));
     }
 
     @Test
-    public void convert() throws Exception {
+    void convert() throws Exception {
         final var note = Note.builder().id(NOTES_ID).build();
         final var firstCategory = Category.builder().id(CAT_ID_1).build();
         final var secondCategory = Category.builder().id(CAT_ID_2).build();
@@ -74,7 +74,7 @@ public class RecipeToRecipeCommandTest {
                 .build();
 
         final var command = converter.convert(recipe);
-        assertNotNull(recipe);
+        assertNotNull(command);
 
         assertEquals(URL, command.getUrl());
         assertEquals(RECIPE_ID, command.getId());

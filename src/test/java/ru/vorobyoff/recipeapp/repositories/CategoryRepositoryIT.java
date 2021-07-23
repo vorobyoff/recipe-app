@@ -5,8 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataRetrievalFailureException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class CategoryRepositoryIT {
@@ -25,9 +24,8 @@ class CategoryRepositoryIT {
 
     @Test
     void findByDescriptionNotFoundCase() {
-        final var description = "Russian";
-        final var category = repository.findByDescription(description);
-
-        assertTrue(category.isEmpty());
+        final var categoryOpt = repository.findByDescription("Russian");
+        assertNotNull(categoryOpt);
+        assertTrue(categoryOpt.isEmpty());
     }
 }

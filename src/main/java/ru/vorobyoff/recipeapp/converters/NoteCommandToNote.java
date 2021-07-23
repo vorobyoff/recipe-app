@@ -6,17 +6,19 @@ import org.springframework.stereotype.Component;
 import ru.vorobyoff.recipeapp.commands.NoteCommand;
 import ru.vorobyoff.recipeapp.domain.Note;
 
+import static java.util.Objects.isNull;
+
 @Component
-public class NoteCommandToNote implements Converter<NoteCommand, Note> {
+public final class NoteCommandToNote implements Converter<NoteCommand, Note> {
 
     @Nullable
     @Override
-    public Note convert(NoteCommand source) {
-        if (source == null) return null;
+    public Note convert(final NoteCommand command) {
+        if (isNull(command)) return null;
 
         return Note.builder()
-                .recipeNote(source.getRecipeNote())
-                .id(source.getId())
+                .recipeNote(command.getRecipeNote())
+                .id(command.getId())
                 .build();
     }
 }

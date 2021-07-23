@@ -8,7 +8,7 @@ import ru.vorobyoff.recipeapp.services.RecipeService;
 
 @Controller
 @RequiredArgsConstructor
-public class IndexController {
+public final class IndexController {
 
     private final RecipeService recipeService;
 

@@ -16,11 +16,12 @@ import ru.vorobyoff.recipeapp.domain.Recipe;
 import java.util.Set;
 
 import static java.util.Collections.emptySet;
+import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toSet;
 
 @Component
 @RequiredArgsConstructor
-public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
+public final class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
 
     private final Converter<Ingredient, IngredientCommand> ingredientConverter;
     private final Converter<Category, CategoryCommand> categoryConverter;
@@ -28,26 +29,26 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
 
     @Nullable
     @Override
-    public RecipeCommand convert(final Recipe source) {
-        if (source == null) return null;
+    public RecipeCommand convert(final Recipe recipe) {
+        if (isNull(recipe)) return null;
 
-        final var ingredientCommands = convertIngredients(source.getIngredients());
-        final var categoryCommands = convertCategories(source.getCategories());
-        final var noteCommand = notesConverter.convert(source.getNote());
+        final var ingredientCommands = convertIngredients(recipe.getIngredients());
+        final var categoryCommands = convertCategories(recipe.getCategories());
+        final var noteCommand = notesConverter.convert(recipe.getNote());
 
         return RecipeCommand.builder()
-                .description(source.getDescription())
-                .difficulty(source.getDifficulty())
+                .description(recipe.getDescription())
+                .difficulty(recipe.getDifficulty())
                 .ingredients(ingredientCommands)
-                .direction(source.getDirection())
-                .cookTime(source.getCookTime())
-                .prepTime(source.getPrepTime())
+                .direction(recipe.getDirection())
+                .cookTime(recipe.getCookTime())
+                .prepTime(recipe.getPrepTime())
                 .categories(categoryCommands)
-                .serving(source.getServing())
-                .source(source.getSource())
-                .url(source.getUrl())
+                .serving(recipe.getServing())
+                .source(recipe.getSource())
+                .url(recipe.getUrl())
                 .note(noteCommand)
-                .id(source.getId())
+                .id(recipe.getId())
                 .build();
     }
 

@@ -9,23 +9,25 @@ import ru.vorobyoff.recipeapp.commands.UnitOfMeasureCommand;
 import ru.vorobyoff.recipeapp.domain.Ingredient;
 import ru.vorobyoff.recipeapp.domain.UnitOfMeasure;
 
+import static java.util.Objects.isNull;
+
 @Component
 @RequiredArgsConstructor
-public class IngredientCommandToIngredient implements Converter<IngredientCommand, Ingredient> {
+public final class IngredientCommandToIngredient implements Converter<IngredientCommand, Ingredient> {
 
     private final Converter<UnitOfMeasureCommand, UnitOfMeasure> uomConverter;
 
     @Nullable
     @Override
-    public Ingredient convert(IngredientCommand source) {
-        if (source == null) return null;
+    public Ingredient convert(final IngredientCommand command) {
+        if (isNull(command)) return null;
 
-        final var uom = uomConverter.convert(source.getUom());
+        final var uom = uomConverter.convert(command.getUom());
 
         return Ingredient.builder()
-                .description(source.getDescription())
-                .amount(source.getAmount())
-                .id(source.getId())
+                .description(command.getDescription())
+                .amount(command.getAmount())
+                .id(command.getId())
                 .uom(uom)
                 .build();
     }

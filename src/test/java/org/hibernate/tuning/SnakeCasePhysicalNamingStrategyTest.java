@@ -11,7 +11,7 @@ import static org.hibernate.boot.model.naming.Identifier.toIdentifier;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-class SnakeCasePhysicalNamingStrategyTest {
+final class SnakeCasePhysicalNamingStrategyTest {
 
     private static final String SNAKE_CASE_NAME = "camel_case_register_name";
     private static final String CAMEL_CASE_NAME = "camelCaseRegisterName";

@@ -16,11 +16,12 @@ import ru.vorobyoff.recipeapp.domain.Recipe;
 import java.util.Set;
 
 import static java.util.Collections.emptySet;
+import static java.util.Objects.isNull;
 import static java.util.stream.Collectors.toSet;
 
 @Component
 @RequiredArgsConstructor
-public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
+public final class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
 
     private final Converter<IngredientCommand, Ingredient> ingredientConverter;
     private final Converter<CategoryCommand, Category> categoryConverter;
@@ -28,25 +29,25 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
 
     @Nullable
     @Override
-    public Recipe convert(RecipeCommand source) {
-        if (source == null) return null;
+    public Recipe convert(final RecipeCommand command) {
+        if (isNull(command)) return null;
 
-        final var ingredients = convertIngredients(source.getIngredients());
-        final var categories = convertCategories(source.getCategories());
-        final var note = notesConverter.convert(source.getNote());
+        final var ingredients = convertIngredients(command.getIngredients());
+        final var categories = convertCategories(command.getCategories());
+        final var note = notesConverter.convert(command.getNote());
 
         final var recipe = Recipe.builder()
-                .description(source.getDescription())
-                .difficulty(source.getDifficulty())
-                .direction(source.getDirection())
-                .cookTime(source.getCookTime())
-                .prepTime(source.getPrepTime())
-                .serving(source.getServing())
+                .description(command.getDescription())
+                .difficulty(command.getDifficulty())
+                .direction(command.getDirection())
+                .cookTime(command.getCookTime())
+                .prepTime(command.getPrepTime())
+                .serving(command.getServing())
                 .ingredients(ingredients)
-                .source(source.getSource())
+                .source(command.getSource())
                 .categories(categories)
-                .url(source.getUrl())
-                .id(source.getId())
+                .url(command.getUrl())
+                .id(command.getId())
                 .note(note)
                 .build();
 
@@ -67,6 +68,6 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
 
     private void setupIngredientsRecipe(final Set<Ingredient> ingredients, final Recipe recipe) {
         if (ingredients.isEmpty()) return;
-        ingredients.forEach(i -> i.setRecipe(recipe));
+        ingredients.forEach(ingredient -> ingredient.setRecipe(recipe));
     }
 }

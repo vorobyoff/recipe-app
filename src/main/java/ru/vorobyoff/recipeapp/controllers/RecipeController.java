@@ -16,7 +16,7 @@ import static java.lang.String.format;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/recipe/")
-public class RecipeController {
+public final class RecipeController {
 
     private final RecipeService service;
 
@@ -28,7 +28,7 @@ public class RecipeController {
 
     @GetMapping("new")
     public final String createNewRecipe(final Model model) {
-        model.addAttribute("recipe", new RecipeCommand());
+        model.addAttribute("recipe", RecipeCommand.builder().build());
         return "recipe/form";
     }
 

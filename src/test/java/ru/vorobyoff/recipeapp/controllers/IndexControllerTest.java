@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
-class IndexControllerTest {
+final class IndexControllerTest {
 
     @Mock
     private RecipeService recipeService;
@@ -30,11 +30,11 @@ class IndexControllerTest {
 
     @Test
     void showIndexPage() throws Exception {
-        final var testRecipe = Recipe.builder().build();
-        when(recipeService.findAllRecipes()).thenReturn(singleton(testRecipe));
+        final var testRecipes = singleton(Recipe.builder().build());
+        when(recipeService.findAllRecipes()).thenReturn(testRecipes);
 
         mockMvc.perform(get("/"))
-                .andExpect(model().attribute("recipes", singleton(testRecipe)))
+                .andExpect(model().attribute("recipes", testRecipes))
                 .andExpect(view().name("index"))
                 .andExpect(forwardedUrl("index"))
                 .andExpect(status().isOk());

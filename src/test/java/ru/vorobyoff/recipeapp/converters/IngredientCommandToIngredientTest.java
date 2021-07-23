@@ -2,73 +2,85 @@ package ru.vorobyoff.recipeapp.converters;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.springframework.core.convert.converter.Converter;
 import ru.vorobyoff.recipeapp.commands.IngredientCommand;
 import ru.vorobyoff.recipeapp.commands.UnitOfMeasureCommand;
+import ru.vorobyoff.recipeapp.domain.UnitOfMeasure;
 
 import java.math.BigDecimal;
 
 import static java.math.BigDecimal.ONE;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
 
-public class IngredientCommandToIngredientTest {
+final class IngredientCommandToIngredientTest {
 
-    private static final String DESCRIPTION = "Cheeseburger";
-    private static final BigDecimal AMOUNT = ONE;
-    private static final Long ID_VALUE = 1L;
-    private static final Long UOM_ID = 2L;
+    private static final String TEST_DESCRIPTION = "Cheeseburger";
+    private static final BigDecimal TEST_AMOUNT = ONE;
+    private static final Long TEST_ID = 1L;
 
+    @Mock
+    private Converter<UnitOfMeasureCommand, UnitOfMeasure> toUnitOfMeasureConverter;
     private IngredientCommandToIngredient converter;
+    private IngredientCommand testIngredientCommand;
 
     @BeforeEach
-    public void setUp() throws Exception {
-        converter = new IngredientCommandToIngredient(new UnitOfMeasureCommandToUnitOfMeasure());
+    void setUp() {
+        openMocks(this);
+        converter = new IngredientCommandToIngredient(toUnitOfMeasureConverter);
+
+        final var testUomCommand = UnitOfMeasureCommand.builder().id(TEST_ID).build();
+        testIngredientCommand = IngredientCommand.builder()
+                .description(TEST_DESCRIPTION)
+                .amount(TEST_AMOUNT)
+                .uom(testUomCommand)
+                .id(TEST_ID)
+                .build();
     }
 
     @Test
-    public void testNullObject() {
+    void convert() {
+        final var testUom = UnitOfMeasure.builder().id(TEST_ID).build();
+
+        when(toUnitOfMeasureConverter.convert(any())).thenReturn(testUom);
+
+        final var ingredient = converter.convert(testIngredientCommand);
+        assertNotNull(ingredient);
+
+        assertEquals(TEST_ID, ingredient.getId());
+        assertEquals(TEST_AMOUNT, ingredient.getAmount());
+        assertEquals(TEST_DESCRIPTION, ingredient.getDescription());
+
+        final var uom = ingredient.getUom();
+        assertNotNull(uom);
+
+        assertEquals(TEST_ID, uom.getId());
+    }
+
+    @Test
+    void convertNullPassedCase() {
         assertNull(converter.convert(null));
     }
 
     @Test
-    public void testEmptyObject() {
-        assertNotNull(converter.convert(new IngredientCommand()));
+    void convertEmptyObjectPassedCase() {
+        assertNotNull(converter.convert(IngredientCommand.builder().build()));
     }
 
     @Test
-    public void convert() throws Exception {
-        final var unitOfMeasureCommand = UnitOfMeasureCommand.builder().id(UOM_ID).build();
+    void convertWithNullUOM() {
+        testIngredientCommand.setUom(null);
 
-        final var command = IngredientCommand.builder()
-                .description(DESCRIPTION)
-                .uom(unitOfMeasureCommand)
-                .amount(AMOUNT)
-                .id(ID_VALUE)
-                .build();
-
-        final var ingredient = converter.convert(command);
-
+        final var ingredient = converter.convert(testIngredientCommand);
         assertNotNull(ingredient);
-        assertNotNull(ingredient.getUom());
-        assertEquals(ID_VALUE, ingredient.getId());
-        assertEquals(AMOUNT, ingredient.getAmount());
-        assertEquals(UOM_ID, ingredient.getUom().getId());
-        assertEquals(DESCRIPTION, ingredient.getDescription());
-    }
 
-    @Test
-    public void convertWithNullUOM() {
-        final var command = IngredientCommand.builder()
-                .description(DESCRIPTION)
-                .amount(AMOUNT)
-                .id(ID_VALUE)
-                .build();
+        assertEquals(TEST_ID, ingredient.getId());
+        assertEquals(TEST_AMOUNT, ingredient.getAmount());
+        assertEquals(TEST_DESCRIPTION, ingredient.getDescription());
 
-        final var ingredient = converter.convert(command);
-
-        assertNotNull(ingredient);
         assertNull(ingredient.getUom());
-        assertEquals(ID_VALUE, ingredient.getId());
-        assertEquals(AMOUNT, ingredient.getAmount());
-        assertEquals(DESCRIPTION, ingredient.getDescription());
     }
 }

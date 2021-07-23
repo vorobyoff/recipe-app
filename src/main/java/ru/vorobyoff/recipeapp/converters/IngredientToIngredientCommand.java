@@ -13,26 +13,24 @@ import static java.util.Objects.isNull;
 
 @Component
 @RequiredArgsConstructor
-public class IngredientToIngredientCommand implements Converter<Ingredient, IngredientCommand> {
+public final class IngredientToIngredientCommand implements Converter<Ingredient, IngredientCommand> {
 
     private final Converter<UnitOfMeasure, UnitOfMeasureCommand> uomConverter;
 
     @Nullable
     @Override
-    public IngredientCommand convert(Ingredient ingredient) {
-        if (ingredient == null) return null;
+    public IngredientCommand convert(final Ingredient ingredient) {
+        if (isNull(ingredient)) return null;
 
+        final var recipeId = isNull(ingredient.getRecipe()) ? null : ingredient.getRecipe().getId();
         final var uom = uomConverter.convert(ingredient.getUom());
 
-        final var command = IngredientCommand.builder()
+        return IngredientCommand.builder()
                 .description(ingredient.getDescription())
                 .amount(ingredient.getAmount())
                 .id(ingredient.getId())
+                .recipeId(recipeId)
                 .uom(uom)
                 .build();
-
-        if (!isNull(ingredient.getRecipe())) command.setRecipeId(ingredient.getRecipe().getId());
-
-        return command;
     }
 }

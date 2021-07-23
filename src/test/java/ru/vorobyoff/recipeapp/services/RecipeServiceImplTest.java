@@ -76,7 +76,7 @@ class RecipeServiceImplTest {
     void saveRecipeCommand() {
         when(toRecipeCommandMockConverter.convert(any())).thenReturn(RecipeCommand.builder().id(RECIPE_TEST_ID).build());
         when(toRecipeMockConverter.convert(any())).thenReturn(Recipe.builder().id(RECIPE_TEST_ID).build());
-        final var saved = service.saveRecipeCommand(new RecipeCommand());
+        final var saved = service.saveRecipeCommand(RecipeCommand.builder().build());
         assertEquals(RECIPE_TEST_ID, saved.getId());
         verify(toRecipeCommandMockConverter).convert(any());
         verify(toRecipeMockConverter).convert(any());

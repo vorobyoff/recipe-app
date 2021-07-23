@@ -2,7 +2,6 @@ package ru.vorobyoff.recipeapp.commands;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.vorobyoff.recipeapp.domain.Difficulty;
 
@@ -10,8 +9,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-@NoArgsConstructor
-public class RecipeCommand extends BaseCommand {
+public final class RecipeCommand extends BaseCommand {
 
     private Set<IngredientCommand> ingredients;
     private Set<CategoryCommand> categories;

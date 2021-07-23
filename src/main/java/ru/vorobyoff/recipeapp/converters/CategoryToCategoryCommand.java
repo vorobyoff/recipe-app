@@ -6,17 +6,19 @@ import org.springframework.stereotype.Component;
 import ru.vorobyoff.recipeapp.commands.CategoryCommand;
 import ru.vorobyoff.recipeapp.domain.Category;
 
+import static java.util.Objects.isNull;
+
 @Component
-public class CategoryToCategoryCommand implements Converter<Category, CategoryCommand> {
+public final class CategoryToCategoryCommand implements Converter<Category, CategoryCommand> {
 
     @Nullable
     @Override
-    public CategoryCommand convert(Category source) {
-        if (source == null) return null;
+    public CategoryCommand convert(final Category category) {
+        if (isNull(category)) return null;
 
         return CategoryCommand.builder()
-                .description(source.getDescription())
-                .id(source.getId())
+                .description(category.getDescription())
+                .id(category.getId())
                 .build();
     }
 }

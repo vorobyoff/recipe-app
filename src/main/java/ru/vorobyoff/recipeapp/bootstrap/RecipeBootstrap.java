@@ -23,11 +23,11 @@ import static ru.vorobyoff.recipeapp.domain.Difficulty.MODERATE;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
+public final class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
-    private final RecipeRepository recipeRepository;
-    private final CategoryRepository categoryRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
+    private final CategoryRepository categoryRepository;
+    private final RecipeRepository recipeRepository;
 
     @Override
     public void onApplicationEvent(final ContextRefreshedEvent event) {
@@ -160,11 +160,11 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
     private Category findCategoryByDescription(final String description) {
         return categoryRepository.findByDescription(description)
-                .orElseThrow(() -> new RuntimeException("Expected Category Not Found. Description is '" + description + "'."));
+                .orElseThrow(() -> new IllegalArgumentException("Expected Category Not Found. Description is '" + description + "'."));
     }
 
     private UnitOfMeasure findUnitOfMeasureByDescription(final String description) {
         return unitOfMeasureRepository.findByDescription(description)
-                .orElseThrow(() -> new RuntimeException("Expected Unit Not Found. Unit type is '" + description + "'."));
+                .orElseThrow(() -> new IllegalArgumentException("Expected Unit Not Found. Unit type is '" + description + "'."));
     }
 }

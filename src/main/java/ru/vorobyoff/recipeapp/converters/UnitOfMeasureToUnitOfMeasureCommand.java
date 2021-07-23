@@ -6,13 +6,15 @@ import org.springframework.stereotype.Component;
 import ru.vorobyoff.recipeapp.commands.UnitOfMeasureCommand;
 import ru.vorobyoff.recipeapp.domain.UnitOfMeasure;
 
+import static java.util.Objects.isNull;
+
 @Component
-public class UnitOfMeasureToUnitOfMeasureCommand implements Converter<UnitOfMeasure, UnitOfMeasureCommand> {
+public final class UnitOfMeasureToUnitOfMeasureCommand implements Converter<UnitOfMeasure, UnitOfMeasureCommand> {
 
     @Nullable
     @Override
-    public UnitOfMeasureCommand convert(UnitOfMeasure unitOfMeasure) {
-        if (unitOfMeasure == null) return null;
+    public UnitOfMeasureCommand convert(final UnitOfMeasure unitOfMeasure) {
+        if (isNull(unitOfMeasure)) return null;
 
         return UnitOfMeasureCommand.builder()
                 .description(unitOfMeasure.getDescription())

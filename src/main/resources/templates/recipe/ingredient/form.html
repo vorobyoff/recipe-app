@@ -45,10 +45,10 @@
                                     <label>
                                         UOM:
                                         <select class="form-control" name="uom.id">
-                                            <option th:each="uomEach : ${uomList}"
-                                                    th:selected="${uomEach.id.equals(ingredient.uom.id)}"
-                                                    th:text="${uomEach.description}"
-                                                    th:value="${uomEach.id}">
+                                            <option th:each="unit : ${units}"
+                                                    th:selected="${unit.getId().equals(ingredient.getUom().getId())}"
+                                                    th:text="${unit.getDescription()}"
+                                                    th:value="${unit.getId()}">
                                             </option>
                                         </select>
                                     </label>

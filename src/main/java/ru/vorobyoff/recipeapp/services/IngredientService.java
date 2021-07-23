@@ -12,4 +12,6 @@ public interface IngredientService {
     Set<IngredientCommand> findIngredientCommandOfRecipeByItsId(final Long recipeId);
 
     Ingredient findIngredientByRecipeIdAndIngredientId(final Long ingredientId, final Long recipeId);
+
+    IngredientCommand findIngredientCommandByRecipeIdAndIngredientId(final Long ingredientId, final Long recipeId);
 }

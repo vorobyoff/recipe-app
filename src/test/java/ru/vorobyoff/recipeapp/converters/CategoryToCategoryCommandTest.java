@@ -6,38 +6,40 @@ import ru.vorobyoff.recipeapp.domain.Category;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CategoryToCategoryCommandTest {
+final class CategoryToCategoryCommandTest {
 
-    private static final String DESCRIPTION = "Description";
-    private static final Long ID_VALUE = 1L;
+    private static final String TEST_DESCRIPTION = "Description";
+    private static final Long TEST_ID = 1L;
+
     private CategoryToCategoryCommand converter;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() {
         converter = new CategoryToCategoryCommand();
     }
 
     @Test
-    public void testNullObject() {
-        assertNull(converter.convert(null));
-    }
+    void convert() throws Exception {
 
-    @Test
-    public void testEmptyObject() {
-        assertNotNull(converter.convert(Category.builder().build()));
-    }
-
-    @Test
-    public void convert() throws Exception {
         final var category = Category.builder()
-                .description(DESCRIPTION)
-                .id(ID_VALUE)
+                .description(TEST_DESCRIPTION)
+                .id(TEST_ID)
                 .build();
 
         final var categoryCommand = converter.convert(category);
         assertNotNull(categoryCommand);
 
-        assertEquals(DESCRIPTION, categoryCommand.getDescription());
-        assertEquals(ID_VALUE, categoryCommand.getId());
+        assertEquals(TEST_DESCRIPTION, categoryCommand.getDescription());
+        assertEquals(TEST_ID, categoryCommand.getId());
+    }
+
+    @Test
+    void convertNullPassedCase() {
+        assertNull(converter.convert(null));
+    }
+
+    @Test
+    void convertEmptyObjectPassedCase() {
+        assertNotNull(converter.convert(Category.builder().build()));
     }
 }

@@ -6,17 +6,19 @@ import org.springframework.stereotype.Component;
 import ru.vorobyoff.recipeapp.commands.UnitOfMeasureCommand;
 import ru.vorobyoff.recipeapp.domain.UnitOfMeasure;
 
+import static java.util.Objects.isNull;
+
 @Component
-public class UnitOfMeasureCommandToUnitOfMeasure implements Converter<UnitOfMeasureCommand, UnitOfMeasure> {
+public final class UnitOfMeasureCommandToUnitOfMeasure implements Converter<UnitOfMeasureCommand, UnitOfMeasure> {
 
     @Nullable
     @Override
-    public UnitOfMeasure convert(UnitOfMeasureCommand source) {
-        if (source == null) return null;
+    public UnitOfMeasure convert(final UnitOfMeasureCommand command) {
+        if (isNull(command)) return null;
 
         return UnitOfMeasure.builder()
-                .description(source.getDescription())
-                .id(source.getId())
+                .description(command.getDescription())
+                .id(command.getId())
                 .build();
     }
 }

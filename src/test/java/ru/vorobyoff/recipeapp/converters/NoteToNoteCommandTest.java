@@ -6,7 +6,7 @@ import ru.vorobyoff.recipeapp.domain.Note;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class NotesToNotesCommandTest {
+final class NoteToNoteCommandTest {
 
     private static final String RECIPE_NOTES = "Note";
     private static final Long ID_VALUE = 1L;
@@ -14,12 +14,12 @@ public class NotesToNotesCommandTest {
     private NoteToNoteCommand converter;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         converter = new NoteToNoteCommand();
     }
 
     @Test
-    public void convert() {
+    void convert() {
         final var notes = Note.builder()
                 .recipeNote(RECIPE_NOTES)
                 .id(ID_VALUE)
@@ -33,12 +33,12 @@ public class NotesToNotesCommandTest {
     }
 
     @Test
-    public void testNull() {
+    void convertNullPassedCase() {
         assertNull(converter.convert(null));
     }
 
     @Test
-    public void testEmptyObject() {
+    void convertEmptyObjectPassedCase() {
         assertNotNull(converter.convert(Note.builder().build()));
     }
 }

@@ -10,7 +10,6 @@
 
 </head>
 <body>
-<!--/*@thymesVar id="ingredient" type="guru.springframework.commands.IngredientCommand"*/-->
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
@@ -30,8 +29,8 @@
                             </tr>
                             </thead>
                             <tr>
-                                <td th:text="${ingredient.id}"></td>
-                                <td th:text="${ingredient.amount} + ' ' + ${ingredient.uom.getDescription()} + ' ' + ${ingredient.description}"></td>
+                                <td th:text="${ingredient.getId()}"></td>
+                                <td th:text="${ingredient.getAmount()} + ' ' + ${ingredient.getUom().getDescription()} + ' ' + ${ingredient.getDescription()}"></td>
                             </tr>
                         </table>
                     </div>
