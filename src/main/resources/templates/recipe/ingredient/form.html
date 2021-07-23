@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit Ingredient</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+    <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+    <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+<div class="container-fluid" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form method="post" th:action="@{'/recipe/' + ${ingredient.getRecipeId()} + '/ingredient'} "
+                  th:object="${ingredient}">
+                <input th:field="*{id}" type="hidden"/>
+
+                <div class="panel-group">
+                    <div class="panel panel-primary">
+
+                        <div class="panel-heading">
+                            <h1 class="panel-title">Edit Ingredient Information</h1>
+                        </div>
+
+                        <div class="panel-body">
+
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>
+                                        Description:
+                                        <input class="form-control" th:field="*{description}" type="text"/>
+                                    </label>
+                                </div>
+
+                                <div class="col-md-3 form-group">
+                                    <label>
+                                        Amount:
+                                        <input class="form-control" th:field="*{amount}" type="number"/>
+                                    </label>
+                                </div>
+
+                                <div class="col-md-3 form-group">
+                                    <label>
+                                        UOM:
+                                        <select class="form-control" name="uom.id">
+                                            <option th:each="uomEach : ${uomList}"
+                                                    th:selected="${uomEach.id.equals(ingredient.uom.id)}"
+                                                    th:text="${uomEach.description}"
+                                                    th:value="${uomEach.id}">
+                                            </option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
