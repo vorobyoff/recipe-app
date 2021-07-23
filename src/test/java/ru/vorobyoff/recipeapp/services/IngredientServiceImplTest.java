@@ -38,7 +38,7 @@ class IngredientServiceImplTest {
     @BeforeEach
     void setUp() {
         openMocks(this);
-        ingredientService = new IngredientServiceImpl(ingredientRepository, ingredientConverter);
+        ingredientService = new IngredientServiceImpl(ingredientConverter, ingredientRepository);
 
         testIngredient = Ingredient.builder()
                 .description(TEST_DESCRIPTION)
