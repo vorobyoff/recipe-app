@@ -22,7 +22,7 @@ public class RecipeController {
 
     @GetMapping({"{recipeId}/show"})
     public final String showRecipeById(@PathVariable final Long recipeId, final Model model) {
-        model.addAttribute("recipe", service.getRecipeById(recipeId));
+        model.addAttribute("recipe", service.findRecipeById(recipeId));
         return "recipe/show";
     }
 
@@ -34,7 +34,7 @@ public class RecipeController {
 
     @GetMapping({"{recipeId}/update"})
     public final String updateRecipeById(@PathVariable final Long recipeId, final Model model) {
-        model.addAttribute("recipe", service.getRecipeCommandById(recipeId));
+        model.addAttribute("recipe", service.findRecipeCommandById(recipeId));
         return "recipe/form";
     }
 
