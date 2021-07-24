@@ -25,7 +25,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Setter
 @NoArgsConstructor(onConstructor_ = @Deprecated, access = PROTECTED)
-public class Recipe extends BaseEntity {
+public final class Recipe extends BaseEntity {
 
     private Integer prepTime;
     private Integer cookTime;

@@ -16,7 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Setter
 @NoArgsConstructor(onConstructor_ = @Deprecated, access = PROTECTED)
-public class Ingredient extends BaseEntity {
+public final class Ingredient extends BaseEntity {
 
     private String description;
     private BigDecimal amount;

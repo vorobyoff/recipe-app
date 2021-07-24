@@ -15,7 +15,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Setter
 @NoArgsConstructor(onConstructor_ = @Deprecated, access = PROTECTED)
-public class Note extends BaseEntity {
+public final class Note extends BaseEntity {
 
     @OneToOne
     private Recipe recipe;

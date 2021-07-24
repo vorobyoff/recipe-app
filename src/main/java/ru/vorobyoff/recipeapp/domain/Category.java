@@ -17,7 +17,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Setter
 @NoArgsConstructor(onConstructor_ = @Deprecated, access = PROTECTED)
-public class Category extends BaseEntity {
+public final class Category extends BaseEntity {
 
     private String description;
     @ManyToMany(mappedBy = "categories")

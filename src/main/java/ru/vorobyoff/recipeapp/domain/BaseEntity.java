@@ -15,7 +15,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(onConstructor_ = @Deprecated, access = PROTECTED)
-public class BaseEntity {
+public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

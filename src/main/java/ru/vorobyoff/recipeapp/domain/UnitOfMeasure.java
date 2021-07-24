@@ -13,7 +13,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Setter
 @NoArgsConstructor(onConstructor_ = @Deprecated, access = PROTECTED)
-public class UnitOfMeasure extends BaseEntity {
+public final class UnitOfMeasure extends BaseEntity {
 
     private String description;
 
