@@ -111,7 +111,7 @@ class IngredientServiceImplTest {
         assertEquals(TEST_ID, firstFound.getId());
 
         verify(ingredientRepository).findIngredientsByRecipe_Id(anyLong());
-        verify(toIngredientConverter).convert(any());
+        verify(toIngredientCommandConverter).convert(any());
     }
 
     @Test
@@ -123,7 +123,7 @@ class IngredientServiceImplTest {
         assertTrue(foundIngredients.isEmpty());
 
         verify(ingredientRepository).findIngredientsByRecipe_Id(anyLong());
-        verify(toIngredientConverter, never()).convert(any());
+        verify(toIngredientCommandConverter, never()).convert(any());
     }
 
     @Test
