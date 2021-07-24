@@ -7,6 +7,8 @@ import java.util.Set;
 
 public interface IngredientService {
 
+    IngredientCommand saveIngredientCommand(final IngredientCommand command);
+
     Set<Ingredient> findIngredientsOfRecipeByItsId(final Long recipeId);
 
     Set<IngredientCommand> findIngredientCommandOfRecipeByItsId(final Long recipeId);

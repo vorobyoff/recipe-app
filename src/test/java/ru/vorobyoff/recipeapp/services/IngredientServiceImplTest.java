@@ -6,8 +6,13 @@ import org.mockito.Mock;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.web.server.ResponseStatusException;
 import ru.vorobyoff.recipeapp.commands.IngredientCommand;
+import ru.vorobyoff.recipeapp.commands.UnitOfMeasureCommand;
 import ru.vorobyoff.recipeapp.domain.Ingredient;
+import ru.vorobyoff.recipeapp.domain.Recipe;
+import ru.vorobyoff.recipeapp.domain.UnitOfMeasure;
 import ru.vorobyoff.recipeapp.repositories.IngredientRepository;
+import ru.vorobyoff.recipeapp.repositories.RecipeRepository;
+import ru.vorobyoff.recipeapp.repositories.UnitOfMeasureRepository;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -28,17 +33,28 @@ class IngredientServiceImplTest {
     private static final Long TEST_ID = 1L;
 
     @Mock
-    private Converter<Ingredient, IngredientCommand> ingredientConverter;
+    private Converter<Ingredient, IngredientCommand> toIngredientCommandConverter;
+    @Mock
+    private Converter<IngredientCommand, Ingredient> toIngredientConverter;
     @Mock
     private IngredientRepository ingredientRepository;
+    @Mock
+    private UnitOfMeasureRepository uomRepository;
+    @Mock
+    private RecipeRepository recipeRepository;
     private IngredientServiceImpl ingredientService;
+    private IngredientCommand testIngredientCommand;
     private Ingredient testIngredient;
-    private IngredientCommand testCommand;
 
     @BeforeEach
     void setUp() {
         openMocks(this);
-        ingredientService = new IngredientServiceImpl(ingredientConverter, ingredientRepository);
+        ingredientService = new IngredientServiceImpl(
+                toIngredientCommandConverter,
+                toIngredientConverter,
+                ingredientRepository,
+                uomRepository,
+                recipeRepository);
 
         testIngredient = Ingredient.builder()
                 .description(TEST_DESCRIPTION)
@@ -46,7 +62,7 @@ class IngredientServiceImplTest {
                 .id(TEST_ID)
                 .build();
 
-        testCommand = IngredientCommand.builder()
+        testIngredientCommand = IngredientCommand.builder()
                 .description(TEST_DESCRIPTION)
                 .amount(TEST_AMOUNT)
                 .id(TEST_ID)
@@ -83,7 +99,7 @@ class IngredientServiceImplTest {
     @Test
     void findIngredientCommandsOfRecipeByItsId() {
         when(ingredientRepository.findIngredientsByRecipe_Id(anyLong())).thenReturn(singleton(testIngredient));
-        when(ingredientConverter.convert(any())).thenReturn(testCommand);
+        when(toIngredientCommandConverter.convert(any())).thenReturn(testIngredientCommand);
 
         final var foundCommands = ingredientService.findIngredientCommandOfRecipeByItsId(anyLong());
         assertNotNull(foundCommands);
@@ -95,7 +111,7 @@ class IngredientServiceImplTest {
         assertEquals(TEST_ID, firstFound.getId());
 
         verify(ingredientRepository).findIngredientsByRecipe_Id(anyLong());
-        verify(ingredientConverter).convert(any());
+        verify(toIngredientConverter).convert(any());
     }
 
     @Test
@@ -107,7 +123,7 @@ class IngredientServiceImplTest {
         assertTrue(foundIngredients.isEmpty());
 
         verify(ingredientRepository).findIngredientsByRecipe_Id(anyLong());
-        verify(ingredientConverter, never()).convert(any());
+        verify(toIngredientConverter, never()).convert(any());
     }
 
     @Test
@@ -132,5 +148,48 @@ class IngredientServiceImplTest {
         when(ingredientRepository.findIngredientsByRecipe_Id(anyLong())).thenThrow(new IllegalArgumentException());
         assertThrows(IllegalArgumentException.class, () -> ingredientService.findIngredientsOfRecipeByItsId(anyLong()));
         verify(ingredientRepository).findIngredientsByRecipe_Id(anyLong());
+    }
+
+    @Test
+    void saveIngredientCommand() {
+
+        final var testRecipe = Recipe.builder()
+                .ingredients(singleton(testIngredient))
+                .id(TEST_ID)
+                .build();
+
+        final var testUom = UnitOfMeasure.builder()
+                .description(TEST_DESCRIPTION)
+                .id(TEST_ID)
+                .build();
+
+        final var testUomCommand = UnitOfMeasureCommand.builder()
+                .description(TEST_DESCRIPTION)
+                .id(TEST_ID)
+                .build();
+
+        testIngredientCommand.setUom(testUomCommand);
+
+        when(toIngredientCommandConverter.convert(any())).thenReturn(testIngredientCommand);
+        when(recipeRepository.findById(any())).thenReturn(Optional.of(testRecipe));
+        when(uomRepository.findById(anyLong())).thenReturn(Optional.of(testUom));
+        when(recipeRepository.save(any())).thenReturn(testRecipe);
+
+        final var savedCommand = ingredientService.saveIngredientCommand(testIngredientCommand);
+        assertNotNull(savedCommand);
+
+        assertEquals(TEST_DESCRIPTION, savedCommand.getDescription());
+        assertEquals(TEST_AMOUNT, savedCommand.getAmount());
+        assertEquals(TEST_ID, savedCommand.getId());
+
+        final var uomCommand = savedCommand.getUom();
+        assertNotNull(uomCommand);
+
+        assertEquals(TEST_DESCRIPTION, uomCommand.getDescription());
+        assertEquals(TEST_ID, uomCommand.getId());
+
+        verify(toIngredientCommandConverter).convert(testIngredient);
+        verify(recipeRepository).findById(testIngredientCommand.getRecipeId());
+        verify(recipeRepository).save(testRecipe);
     }
 }
