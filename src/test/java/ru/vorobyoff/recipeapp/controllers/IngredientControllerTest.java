@@ -36,12 +36,12 @@ final class IngredientControllerTest {
     }
 
     @Test
-    void showIngredientsOfRecipeByRecipeIdMockMvcTest() throws Exception {
+    void showIngredientsOfRecipeByRecipeId() throws Exception {
         final var ingredientCommands = singleton(IngredientCommand.builder().build());
 
         when(ingredientService.findIngredientCommandOfRecipeByItsId(anyLong())).thenReturn(ingredientCommands);
 
-        mockMvc.perform(get("/recipe/1/ingredients"))
+        mockMvc.perform(get("/recipe/{recipeId}/ingredients", 1L))
                 .andExpect(model().attribute("ingredients", ingredientCommands))
                 .andExpect(view().name("recipe/ingredient/list"))
                 .andExpect(forwardedUrl("recipe/ingredient/list"))
@@ -51,7 +51,7 @@ final class IngredientControllerTest {
     }
 
     @Test
-    void showIngredientOfRecipeByRecipeIdAndIngredientIdMockMvcTest() throws Exception {
+    void showIngredientOfRecipeByRecipeIdAndIngredientId() throws Exception {
         final var testIngredient = Ingredient.builder().build();
 
         when(ingredientService.findIngredientByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(testIngredient);
@@ -85,7 +85,7 @@ final class IngredientControllerTest {
     }
 
     @Test
-    void showIngredientsOfRecipeByRecipeIdNNotFoundCaseMockMvcTest() throws Exception {
+    void showIngredientsOfRecipeByRecipeIdNNotFoundCase() throws Exception {
         when(ingredientService.findIngredientCommandOfRecipeByItsId(anyLong())).thenThrow(new ResponseStatusException(NOT_FOUND));
         mockMvc.perform(get("/recipe/1/ingredients")).andExpect(status().isNotFound());
         verify(ingredientService).findIngredientCommandOfRecipeByItsId(anyLong());
@@ -101,5 +101,14 @@ final class IngredientControllerTest {
                 .andExpect(status().isOk());
 
         verifyNoInteractions(ingredientService);
+    }
+
+    @Test
+    void deleteRecipeIngredient() throws Exception {
+        mockMvc.perform(get("/recipe/{recipeId}/ingredient/{ingredientId}/delete", 1L, 1L))
+                .andExpect(redirectedUrl("/recipe/1/ingredients"))
+                .andExpect(status().is3xxRedirection());
+
+        verify(ingredientService).deleteIngredientById(anyLong());
     }
 }

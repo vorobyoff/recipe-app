@@ -79,6 +79,11 @@ public class IngredientServiceImpl implements IngredientService {
                 .orElseThrow();
     }
 
+    @Override
+    public void deleteIngredientById(final Long ingredientId) {
+        ingredientRepository.deleteById(ingredientId);
+    }
+
     private Optional<Ingredient> findRecipeIngredientByItsId(final Long ingredientId, final Recipe recipe) {
         if (isNull(ingredientId)) return empty();
 
