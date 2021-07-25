@@ -13,8 +13,7 @@ import ru.vorobyoff.recipeapp.services.UnitOfMeasureService;
 
 import static java.util.Collections.singleton;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -90,5 +89,17 @@ final class IngredientControllerTest {
         when(ingredientService.findIngredientCommandOfRecipeByItsId(anyLong())).thenThrow(new ResponseStatusException(NOT_FOUND));
         mockMvc.perform(get("/recipe/1/ingredients")).andExpect(status().isNotFound());
         verify(ingredientService).findIngredientCommandOfRecipeByItsId(anyLong());
+    }
+
+    @Test
+    void createNewIngredientForRecipe() throws Exception {
+
+        mockMvc.perform(get("/recipe/{recipeId}/ingredient/new", 1L))
+                .andExpect(model().attributeExists("ingredient", "units"))
+                .andExpect(view().name("recipe/ingredient/form"))
+                .andExpect(forwardedUrl("recipe/ingredient/form"))
+                .andExpect(status().isOk());
+
+        verifyNoInteractions(ingredientService);
     }
 }

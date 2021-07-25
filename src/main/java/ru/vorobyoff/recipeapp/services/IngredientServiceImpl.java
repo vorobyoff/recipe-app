@@ -16,6 +16,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import static java.util.Objects.isNull;
+import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toSet;
 import static org.springframework.data.util.StreamUtils.createStreamFromIterator;
@@ -30,24 +32,6 @@ public class IngredientServiceImpl implements IngredientService {
     private final IngredientRepository ingredientRepository;
     private final UnitOfMeasureRepository uomRepository;
     private final RecipeRepository recipeRepository;
-
-    @Override
-    @Transactional
-    public IngredientCommand saveIngredientCommand(final IngredientCommand command) {
-        final var recipe = recipeRepository.findById(command.getRecipeId())
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Recipe with the given id does not exist."));
-
-        findRecipeIngredientByItsId(command.getId(), recipe).ifPresentOrElse(
-                ingredient -> updateIngredientFromCommand(ingredient, command),
-                () -> recipe.addIngredient(toIngredientConverter.convert(command))
-        );
-
-        return recipeRepository.save(recipe).getIngredients().stream()
-                .filter(ingredient -> ingredient.getId().equals(command.getId()))
-                .findFirst()
-                .flatMap(ingredient -> ofNullable(toIngredientCommandConverter.convert(ingredient)))
-                .orElseThrow();
-    }
 
     @Override
     public Set<Ingredient> findIngredientsOfRecipeByItsId(final Long recipeId) {
@@ -77,18 +61,51 @@ public class IngredientServiceImpl implements IngredientService {
         return toIngredientCommandConverter.convert(ingredient);
     }
 
+    @Override
+    @Transactional
+    public IngredientCommand saveIngredientCommand(final IngredientCommand command) {
+        final var recipe = recipeRepository.findById(command.getRecipeId())
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Recipe with the given id does not exist."));
+
+        findRecipeIngredientByItsId(command.getId(), recipe).ifPresentOrElse(
+                ingredient -> updateExistingIngredientFromCommand(ingredient, command),
+                () -> addNewIngredientCommandToRecipe(recipe, command)
+        );
+
+        return recipeRepository.save(recipe).getIngredients().stream()
+                .filter(ingredient -> ingredient.getId().equals(command.getId()))
+                .findFirst()
+                .flatMap(ingredient -> ofNullable(toIngredientCommandConverter.convert(ingredient)))
+                .orElseThrow();
+    }
+
     private Optional<Ingredient> findRecipeIngredientByItsId(final Long ingredientId, final Recipe recipe) {
+        if (isNull(ingredientId)) return empty();
+
         return recipe.getIngredients().stream()
                 .filter(ingredient -> ingredient.getId().equals(ingredientId))
                 .findFirst();
     }
 
-    private void updateIngredientFromCommand(final Ingredient ingredient, final IngredientCommand command) {
+    private void updateExistingIngredientFromCommand(final Ingredient ingredient, final IngredientCommand command) {
         final var uom = uomRepository.findById(command.getUom().getId())
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Unit with the given id does not exist."));
 
         ingredient.setDescription(command.getDescription());
         ingredient.setAmount(command.getAmount());
         ingredient.setUom(uom);
+    }
+
+    private void addNewIngredientCommandToRecipe(final Recipe recipe, final IngredientCommand command) {
+        final var saved = saveNewIngredientCommand(command);
+        recipe.addIngredient(saved);
+    }
+
+    private Ingredient saveNewIngredientCommand(final IngredientCommand command) {
+        final var convertedIngredient = toIngredientConverter.convert(command);
+        final var saved = ingredientRepository.save(convertedIngredient);
+        command.setId(saved.getId());
+
+        return saved;
     }
 }

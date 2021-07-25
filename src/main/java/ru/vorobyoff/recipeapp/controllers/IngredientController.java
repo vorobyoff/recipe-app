@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.vorobyoff.recipeapp.commands.IngredientCommand;
+import ru.vorobyoff.recipeapp.commands.UnitOfMeasureCommand;
 import ru.vorobyoff.recipeapp.services.IngredientService;
 import ru.vorobyoff.recipeapp.services.UnitOfMeasureService;
 
@@ -47,5 +48,16 @@ public final class IngredientController {
 
         final var savedCommand = ingredientService.saveIngredientCommand(command);
         return format("redirect:/recipe/%1d/ingredient/%2d/show", savedCommand.getRecipeId(), savedCommand.getId());
+    }
+
+    @GetMapping("recipe/{recipeId}/ingredient/new")
+    public final String createNewIngredientForRecipe(@PathVariable final Long recipeId, final Model model) {
+        model.addAttribute("units", uomService.findAllUnitCommands());
+        model.addAttribute("ingredient", IngredientCommand.builder()
+                .uom(new UnitOfMeasureCommand())
+                .recipeId(recipeId)
+                .build());
+
+        return "recipe/ingredient/form";
     }
 }
