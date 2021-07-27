@@ -17,7 +17,18 @@
                 <div class="panel panel-primary">
 
                     <div class="panel-heading">
-                        <h1 class="panel-title" th:text="${#strings.capitalize(recipe.getDescription())}"></h1>
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <h1 class="panel-title"
+                                    th:text="${#strings.capitalizeWords(recipe.getDescription(), ' ')}"></h1>
+                            </div>
+
+                            <div class="col-md-1">
+                                <a class="btn btn-default" href="#"
+                                   role="button" th:href="@{'/recipe/' + ${recipe.getId()} + '/image'}">Change Image</a>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="panel-body">
@@ -25,12 +36,18 @@
                             <div class="col-md-3">
                                 <h5>Categories:</h5>
                             </div>
-                            <div class="col-md-9">
+
+                            <div class="col-md-3">
                                 <ul>
                                     <li th:each="category : ${recipe.getCategories()}"
                                         th:text="${#strings.capitalize(category.getDescription())}">
                                     </li>
                                 </ul>
+                            </div>
+
+                            <div class="col-md-6">
+                                <img alt="Recipe Image"
+                                     height="200" th:src="@{'/recipe/' + ${recipe.getId()} + '/img'}" width="200">
                             </div>
                         </div>
 
@@ -84,7 +101,7 @@
                             </div>
 
                             <div class="col-md-3">
-                                <p th:text="${recipe.getUrl()}"></p>
+                                <a th:href="@{${recipe.getUrl()}}">View Original</a>
                             </div>
                         </div>
                     </div>
@@ -93,7 +110,6 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <div class="row">
-
                             <div class="col-md-11 ">
                                 <h1 class="panel-title">Ingredients</h1>
                             </div>

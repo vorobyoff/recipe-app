@@ -46,6 +46,7 @@ public final class RecipeCommandToRecipe implements Converter<RecipeCommand, Rec
                 .ingredients(ingredients)
                 .source(command.getSource())
                 .categories(categories)
+                .image(command.getImage())
                 .url(command.getUrl())
                 .id(command.getId())
                 .note(note)

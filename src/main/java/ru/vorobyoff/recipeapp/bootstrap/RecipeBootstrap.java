@@ -48,8 +48,12 @@ public final class RecipeBootstrap implements ApplicationListener<ContextRefresh
         final var mexicanCategory = findCategoryByDescription("Mexican");
         log.info("Categories have been received.");
 
-        final var guacRecipe = Recipe.builder().prepTime(10).cookTime(0).description("Perfect Guacamole")
+        final var guacRecipe = Recipe.builder()
+                .url("http://www.simplyrecipes.com/recipes/perfect_guacamole/")
                 .categories(Set.of(americanCategory, mexicanCategory))
+                .description("Perfect Guacamole")
+                .prepTime(10)
+                .cookTime(0)
                 .difficulty(EASY).direction("1 Cut avocado, remove flesh: Cut the avocados in half. " +
                         "Remove seed. Score the inside of the avocado with a blunt knife and scoop out the flesh with a spoon\n" +
                         "2 Mash with a fork: Using a fork, roughly mash the avocado. (Don't overdo it! The guacamole should" +
@@ -92,8 +96,13 @@ public final class RecipeBootstrap implements ApplicationListener<ContextRefresh
                 Ingredient.builder().description("Cilantro").amount(new BigDecimal(2)).uom(tableSpoonUom).build(),
                 Ingredient.builder().description("ripe avocados").amount(new BigDecimal(2)).uom(eachUom).build());
 
-        final var tacosRecipe = Recipe.builder().prepTime(9).cookTime(20).description("Spicy Grilled Chicken Taco")
-                .difficulty(MODERATE).direction("1 Prepare a gas or charcoal grill for medium-high, direct heat.\n" +
+        final var tacosRecipe = Recipe.builder()
+                .url("http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/")
+                .description("Spicy Grilled Chicken Taco")
+                .difficulty(MODERATE)
+                .cookTime(20)
+                .prepTime(9)
+                .direction("1 Prepare a gas or charcoal grill for medium-high, direct heat.\n" +
                         "2 Make the marinade and coat the chicken: In a large bowl, stir together the chili powder, " +
                         "oregano, cumin, sugar, salt, garlic and orange zest. Stir in the orange juice and olive oil to " +
                         "make a loose paste. Add the chicken to the bowl and toss to coat all over.\n" +
